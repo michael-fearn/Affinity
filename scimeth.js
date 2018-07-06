@@ -12,7 +12,10 @@
         
     //  3. Internally Scraped Pages Object -> contains all *visited* internal pages, and the previously recorded times link to the page have been returned.
     //     Newly scanned pages continue to update the count of previously scanned pages. 
-    //      Key:Value -> (String)URL: (Number)Instances of Page           
+    //      Key:Value -> (String)URL: {
+                                //     count: (Number),
+                                //     dateAdded: ?
+                                //      }           
             
 
 // Step 2: Create sample data

@@ -1,16 +1,34 @@
 const cheerio = require('cheerio');
 const puppetScraper = require('./puppetScraper');
 
-module.exports = async function linkScraper ( html, url, baseUrl ) {
+module.exports = async function linkScraper ( html, url, baseUrl, usePuppeteer ) {
     
-    const $ = cheerio.load(html)
-    let hrefList = [];
+  let hrefList = [];
 
+  if(usePuppeteer) {
+    hrefList = await puppetScraper(url);
+    
+    if(!hrefList[0]) {
+      console.log("puppeteer failed to find links")
+      return
+      } 
+  } else {
+    const $ = cheerio.load(html)
+
+    // Loop through the a tags of the input html and add the href attribute from each a tag to the hrefList array
     $('a').each( (i, element) => hrefList[i] = $(element).attr().href);
     // if empty array results of scrape, employ puppeteer method
     if(!hrefList[0]) {
-     hrefList = await puppetScraper(url);
-    }
+      console.log("Get request failed to return html")
 
-    return hrefList.filter( url => !url.startsWith('#') && url  ).map( url => url.startsWith('/') || url.startsWith('?')? baseUrl + url : url  )
+      hrefList = await puppetScraper(url);
+
+      usePuppeteer = true;
+    }
+  }
+
+  // Remove falsy values and references to different parts of the same page
+  const cleanedHrefList = hrefList.filter( href => href && !href.startsWith('#')  && !href.startsWith(url + '#'))
+  const formattedHrefList = cleanedHrefList.map( url => url.startsWith('/') || url.startsWith('?')? baseUrl + url : url  )
+  return [formattedHrefList, usePuppeteer]
   } 

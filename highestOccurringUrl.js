@@ -1,13 +1,5 @@
-module.exports = function mostOccurringUrl (dictionary, category) {
-
-    const workingDictionary = dictionary[category]
-
-    if(!workingDictionary) {
-      console.log('Error in highestOcurringUrl, category does not exist')
-      return
-    }
-
-  const highestValue = Math.max(...(Object.values(test.local)))
-  return Object.keys(object).find(key => object[key] === highestValue);
-  
+module.exports = async function highestOccurringUrl (app, baseUrl) {
+  let response = await app.get('db').highestOccurringUrl([baseUrl, baseUrl + '%']);
+  console.log("Next Page", response[0].to_page)
+  return response[0].to_page
 }

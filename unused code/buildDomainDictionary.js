@@ -12,6 +12,7 @@ module.exports = async function buildDomainDictionary (baseUrl, app) {
     //     }
     // }
 
+    
     let response = await app.get('db').getLinks()
     let dictionaryFrame = response.reduce((frame, resData) =>{
         

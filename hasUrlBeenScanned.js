@@ -3,7 +3,7 @@ module.exports = async function hasUrlBeenScanned(url, app) {
     let response = [];
 
     try {
-        response = await app.get('db').doesPageExist([url + '/'])
+        response = await app.get('db').doesPageExist([url])
     } catch(error) {
         console.log(error);
     }
@@ -14,13 +14,13 @@ module.exports = async function hasUrlBeenScanned(url, app) {
                 // a Month 
         if(pageAge > 2592000000) {
             // deprecate after a month, rescan
-            console.log("deprecated, rescan")
+            console.log("Starting page deprecated, rescan")
             return false;
         }
-        console.log('page exists')
+        console.log('starting page exists in db')
         return true;
     } else {
-        console.log('page does not exist')
+        console.log('starting page does not exist in db')
         return false;
     }
 }

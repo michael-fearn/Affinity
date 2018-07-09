@@ -6,6 +6,7 @@ module.exports = async function linkScraper ( html, url, baseUrl, usePuppeteer )
   let hrefList = [];
 
   if(usePuppeteer) {
+    console.log("using puppeteer")
     hrefList = await puppetScraper(url);
     
     if(!hrefList[0]) {
@@ -13,6 +14,11 @@ module.exports = async function linkScraper ( html, url, baseUrl, usePuppeteer )
       return
       } 
   } else {
+    // if axios returns an error return
+    if (!html) {
+      return [[], false]
+    }
+    
     const $ = cheerio.load(html)
 
     // Loop through the a tags of the input html and add the href attribute from each a tag to the hrefList array
@@ -29,6 +35,9 @@ module.exports = async function linkScraper ( html, url, baseUrl, usePuppeteer )
 
   // Remove falsy values and references to different parts of the same page
   const cleanedHrefList = hrefList.filter( href => href && !href.startsWith('#')  && !href.startsWith(url + '#'))
-  const formattedHrefList = cleanedHrefList.map( url => url.startsWith('/') || url.startsWith('?')? baseUrl + url : url  )
+  const formattedHrefList = cleanedHrefList
+    .map( url => url.startsWith('/') || url.startsWith('?') ? baseUrl + url : url  )
+    .map( url => !url.endsWith('/') ? url + '/' : url)
+
   return [formattedHrefList, usePuppeteer]
   } 

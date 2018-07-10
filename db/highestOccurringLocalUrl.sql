@@ -1,4 +1,4 @@
-SELECT to_page
+SELECT to_page, SUM(count) as count
 FROM site 
     JOIN page ON site.domain = page.domain
     JOIN link ON page.page = link.from_page

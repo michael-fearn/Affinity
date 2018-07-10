@@ -1,5 +1,4 @@
 const Axios = require('axios');
-const fs = require('fs')
 const linkScraper = require('./linkScraper');
 const buildPageDictionary = require('./buildPageDictionary');
 
@@ -28,6 +27,6 @@ module.exports = async function pageScraper ( url, baseUrl, usePuppeteer ) {
   usePuppeteer = linkScraperResponse[1];
   
   let dictionary = await buildPageDictionary(hrefArray, baseUrl)
-  //console.log(dictionary)
+  console.log(dictionary)
   return [dictionary, usePuppeteer]  
 }

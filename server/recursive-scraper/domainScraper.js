@@ -1,6 +1,6 @@
 const getBaseUrl = require('./getBaseUrl');
 const pageScraper = require('./pageScraper');
-const highestOccurringUrl = require('./highestOccurringUrl') 
+const highestOccurringLocalUrl = require('./highestOccurringLocalUrl') 
 const insertLinksIntoDb = require('./insertLinksIntoDb');
 const hasUrlBeenScanned = require('./hasUrlBeenScanned');
 
@@ -25,7 +25,7 @@ module.exports = async function domainScraper (newUrl, maxPageCount, app, usePup
     let scanResults = await hasUrlBeenScanned(newUrl,app);
     //if the page has been scanned, get the most popular unscanned page from the same domain
     if(scanResults) {
-     currentPage = await highestOccurringUrl(app, baseUrl);
+     currentPage = await highestOccurringLocalUrl(app, baseUrl);
     }
   }
  
@@ -64,7 +64,7 @@ module.exports = async function domainScraper (newUrl, maxPageCount, app, usePup
     console.log(error)
   }
   try {
-    nextUrl = await highestOccurringUrl(app,baseUrl)
+    nextUrl = await highestOccurringLocalUrl(app,baseUrl)
   } catch(error) {
     console.log(error)
   }

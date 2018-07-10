@@ -34,7 +34,7 @@ module.exports = async function linkScraper ( html, url, baseUrl, usePuppeteer )
   }
 
   // Remove falsy values and references to different parts of the same page
-  const cleanedHrefList = hrefList.filter( href => href && !href.startsWith('#')  && !href.startsWith(url + '#'))
+  const cleanedHrefList = hrefList.filter( href => href && !href.startsWith('#')  && !href.startsWith(url + '#') && !href.startsWith('javascript'))
   const formattedHrefList = cleanedHrefList
     .map( url => url.startsWith('/') || url.startsWith('?') ? baseUrl + url : url  )
     .map( url => !url.endsWith('/') ? url + '/' : url)

@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css?family=Londrina+Outline');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+
+.login-title {
+ color: #9CFF60;
+ -webkit-text-stroke: 2px #88cb5f;
+ font-family: 'Londrina Outline';
+ font-size: 75px;
+ align-self: center;
+ margin: 30px 30px;
+ z-index: 2;
+}
+
+.login-container {
+    position: relative;
+    align-self: center;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #9CFF60;
+    width: 750px;
+
+}
+
+.login-button {
+    text-align: center;
+    color: #9CFF60;
+    font-family: 'Roboto Mono';
+    font-size: 30px;
+    border: 2px solid #9CFF60;
+    border-radius: 5px;
+    width: 150px;
+    padding: 12px;
+    margin: 30px;
+    align-self: center;
+    z-index: 2;
+
+}
+.login-button:hover {
+    cursor: pointer;
+}
+
+.login-background {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    border: 10px solid #9CFF60;
+    background-color: rgba(159,79,79,.34);
+    filter: blur(150px);
+    animation: bg-color 7s infinite;
+    z-index: 1;
+}
+
+
+@media (min-width: 360px) {
+    .login-title {
+        font-size: 100px;
+    }
+
+    .login-container {
+        width: 400px;
+    }
+}
+
+@media (min-width: 550px) {
+    .login-title {
+        font-size: 100px;
+    }
+
+    .login-container {
+        width: 400px;
+    }
+}
+
+@media (min-width: 680px) {
+    .login-title {
+        font-size: 100px;
+    }
+
+    .login-container {
+        width: 550px;
+    }
+}
+
+@media (min-width: 1100px) {
+    .login-title {
+        font-size: 150px;
+    }
+    .login-container {
+        width: 650px;
+    }
+}
+
+@keyframes bg-color {
+    0% { background-color: rgba(159,79,79,.34); }
+    20% { background-color:rgba(159, 147, 79, 0.34); }
+    40% { background-color:rgba(79, 159, 83, 0.34); }
+    60% { background-color:rgba(79, 94, 159, 0.34); }
+    80% { background-color: rgba(156, 79, 159, 0.34); }
+    100% { background-color: rgba(159,79,79,.34); }
+    }

@@ -8,5 +8,6 @@ module.exports = async function puppetScraper(url) {
     const results = await page.evaluate( ()  => Array.from(document.links).map(e => e.href));
     
     await browser.close();
+    console.log(results)
     return results;
 }

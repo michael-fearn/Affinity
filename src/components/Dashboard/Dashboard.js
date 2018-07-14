@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import io from 'socket.io-client';
-const socket = io.connect('http://localhost:4000')
+import { dashboardActions } from './../../redux/reducer';
+import NavBar from './NavBar/NavBar';
+import D3Container from './../D3Container/D3Container'
 
 class Dashboard extends Component{
     constructor(props){
@@ -10,26 +11,48 @@ class Dashboard extends Component{
         this.state = {
             data: null
         }
+    
     }
 
-    subscribeToData = () => {
-        socket.on('data', data => {
-            console.log("connected")
+
+    submitNewScanHandler = () => {
+        let { newScanUrl, newScanDepth } = this.props
+        console.log(newScanDepth)
+        this.props.socket.emit('new scan', {
+            newScanUrl,
+            newScanDepth
         })
-        socket.emit('myotherevent', { my: 'data' })
+        this.props.resetSubmitNewScanHandler()
+    
     }
     componentDidMount () {
-        this.subscribeToData
-    }
+        this.props.socket.on( 'node zero', (baseUrl) => {
+            console.log("scraper has fired and client knows about it")
+            this.props.resetSubmitNewScanHandler()
+            this.props.setBaseUrl(baseUrl)
+        })
+        this.props.socket.on('scrape data', (scraperData) => {
+            this.props.updateScraperData(scraperData)
+        })
+    }  
 
     render() {
         return(
-            <div>Dashboard
-            {this.state.data}
-            
+            <div>
+            <h3>Dashboard</h3>
+            <NavBar
+                submitNewScanHandler={this.submitNewScanHandler} />
+            <D3Container />
+
             </div>
         )
     }
 }
 
-export default connect(null)(Dashboard)
+function mapStateToProps(state) {
+    return {
+        newScanUrl: state.newScanUrl,
+        newScanDepth: state.newScanDepth
+    }
+}
+export default connect(mapStateToProps, dashboardActions)(Dashboard)

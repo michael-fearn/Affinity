@@ -1,6 +1,6 @@
 const pageScraper = require('./pageScraper')
 
-module.exports = async function breadthSearch (io, maxDepth,  url = '', parentNode = [], counter = 0, hrefState = { scanned:{}, unscanned:{}}) {  
+module.exports = async function breadthSearch (socket, maxDepth,  url = '', parentNode = [], counter = 0, hrefState = { scanned:{}, unscanned:{}}) {  
     
     if ( maxDepth > 0) {
         counter++
@@ -11,8 +11,13 @@ module.exports = async function breadthSearch (io, maxDepth,  url = '', parentNo
         return
     }
 
-    if (!parentNode[0]) {
+    
 
+    if (!parentNode[0]) {
+         
+        if(!url.endsWith('/')) url = url + '/'
+        console.log("hit node 0")
+        socket.emit('node zero', url)
         console.log("Creating center node with:", url)
         //currentPageResults [dictionary, hrefList]
         const currentPageResults = await pageScraper(url)
@@ -38,10 +43,10 @@ module.exports = async function breadthSearch (io, maxDepth,  url = '', parentNo
 
             //currentPageResults [dictionary, hrefList]
             console.log("Scanning Page: ", parentNode[i].toPage)
-            const currentPageResults = await pageScraper(parentNode[i].toPage)
+            const currentPageResults = await pageScraper(parentNode[i].toPage, counter)
             currentNode = [...currentNode, ...currentPageResults[0]];
             console.log('depth: ', counter , "|  position in currentNode: ", i+1, "|  currentNode: ", parentNode.length, "|  childNode:", currentNode.length)
-             // io.socket.emit arry2, or each scrape, concatinated at the client
+            socket.emit('scrape data', currentPageResults[0])
             currentPageResults[1].reduce( (hrefState, url) => {
 
                 if(hrefState.scanned[url]) {
@@ -54,6 +59,6 @@ module.exports = async function breadthSearch (io, maxDepth,  url = '', parentNo
             },hrefState)
         } 
     }
-    // socket.emit another code to symbolize the end of the node ring
-    breadthSearch(io, maxDepth, '', currentNode, counter, hrefState)
+    socket.emit('end of node')
+    breadthSearch(socket, maxDepth, '', currentNode, counter, hrefState)
 }

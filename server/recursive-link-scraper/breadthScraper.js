@@ -1,49 +1,42 @@
 const pageScraper = require('./pageScraper')
+const dictionaryBuilder = require('./dictionaryBuilder');
 const inputFilterFactory = require('./inputFilterFactory')
-module.exports = async function breadthSearch ( maxDepth,  url = '', parentNode = [], counter = 0, hrefState = { scanned:{}, unscanned:{}}) {  
-    
-    if ( maxDepth > 0) {
-        counter++
-        maxDepth--
-    }
-    else {
-        console.log("done")
-        return
-    }
 
-    let inputFilter = inputFilterFactory()
+module.exports = async function breadthSearch1(url, maxDepth) {
 
-    if (!parentNode[0]) {
-         
-        if(!url.endsWith('/')) url = url + '/'
-        console.log("hit node 0")
-        //socket.emit('node zero', url)
-        console.log("Creating center node with:", url)
-        //currentPageResults [dictionary, hrefList]
-        const currentPageResults = await pageScraper(url)
-
-        inputFilter.moveToBlacklist(url)
-        inputFilter.addToLists(currentPageResults[1])
-
-        parentNode = currentPageResults[0]
-    }
-
+    if(!url.endsWith('/')) url = url + '/'
+   
+    let nodeContainer =[]
+    let parentNode = [{toPage: ''}]
+    parentNode[0].toPage = url
     let currentNode = []
+    let currentNodeIndex = 0
     
-    for(let i = 0; i < parentNode.length; i++) {
+    let inputFilter = inputFilterFactory()
+  
+    for (let i = 0; i < maxDepth; i++) {
 
-        // Logic to determine whether or not a page has been scanned previously. If It has been, skip it. 
-        if (!inputFilter.blacklistIncludes(parentNode[i].toPage)) {
-            
-            const currentPageResults = await pageScraper(parentNode[i].toPage, counter)
-            currentNode = [...currentNode, ...currentPageResults[0]];
 
-            console.log("Scanning Page: ", parentNode[i].toPage)
-            console.log('depth: ', counter , "|  position in currentNode: ", i+1, "|  currentNode: ", parentNode.length, "|  childNode:", currentNode.length)
-            
-            inputFilter.addToLists(currentPageResults[1])
+        for(let j = 0; j < parentNode.length; j++) {
+            const currentUrl = parentNode[j].toPage
+            // Logic to determine whether or not a page has been scanned previously. If It has been, skip it. 
+            if (!inputFilter.blacklistIncludes(currentUrl)) {
+                
+                const hrefList = await pageScraper(currentUrl)
+                
+                inputFilter.addToLists(hrefList)
+                const pageDictionary = dictionaryBuilder(hrefList, currentUrl, currentNodeIndex)
+                
+                currentNode = [...currentNode, ...pageDictionary];
+                
+                console.log("Scanning Page: ", currentUrl)
+                console.log('depth: ', currentNodeIndex , "|  position in currentNode: ", j+1, "|  currentNode length: ", parentNode.length, "|  childNode:", currentNode.length)
+            }
         }
+        nodeContainer[currentNodeIndex] = parentNode;
+        parentNode = currentNode
+        currentNode = []
+        maxDepth--
+        currentNodeIndex++
     }
-    //socket.emit('end of node')
-    breadthSearch( maxDepth, '', currentNode, counter, hrefState)
 }

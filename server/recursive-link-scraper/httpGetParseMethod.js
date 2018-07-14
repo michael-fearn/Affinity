@@ -21,7 +21,7 @@ module.exports = async function httpGetParseMethod(url) {
     $('a').each( (i, element) => hrefList[i] = $(element).attr().href )
 
     if(!hrefList[0]) {
-        console.log("http get parse failed")
+        console.log("http get parse failed, using puppeteer")
         return
     }
     

@@ -1,4 +1,4 @@
 const breadthScraper = require('./breadthScraper');
 
 
-breadthScraper(2, 'https://www.threadless.com/')
+breadthScraper('https://www.threadless.com/', 3)

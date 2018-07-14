@@ -11,7 +11,7 @@ class D3Container extends Component {
                     <p>From page:{linkObj.fromPage}</p>
                     <p>To page:{linkObj.toPage}</p>
                     <p>Occurences on page:{linkObj.count}</p>
-                    <p>Number of current node: {linkObj.currentNodeNumber}</p>
+                    <p>Number of current node: {linkObj.currentNodeIndex}</p>
                     <br/>
                 </div>
             )

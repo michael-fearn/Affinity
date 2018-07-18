@@ -1,12 +1,47 @@
-import React from 'react';
+import React, { Component } from 'react';
 import LoginFrame from './LoginFrame/LoginFrame';
-import D3Container from './../D3Container/D3Container';
+import Sunburst from '../ChartContainer/Sunburst';
+import data from './../ChartContainer/data';
+// import './LoginPage.css';
 
-export default function LoginPage (props) {
-    return (
-        <div>
-            <LoginFrame />
-            <D3Container />
-        </div>
-    )
+export default class LoginPage extends Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            showLoginFrame: true
+        }
+    }
+    
+    render() {
+
+        return (
+            <div >
+                <div 
+                    className="hide-button" 
+                    onClick={() => this.setState({showLoginFrame: !this.state.showLoginFrame})}>
+                        {this.state.showLoginFrame ? 'Hide Login' : 'Show Login'}
+                      
+                </div>
+
+                <div className="login-page-container">
+                
+                { this.state.showLoginFrame ? (
+                    <LoginFrame className="login-page-frame" />  
+                ) : (
+                    null
+                )}
+                    <div className="login-page-graph">
+                        <Sunburst
+                            
+                            data={data}
+                            width={window.innerWidth-5}
+                            height={window.innerHeight-5}
+                            />         
+                    </div>
+                    
+                </div>
+            </div>
+        )
+    }
 }

@@ -1,26 +1,28 @@
 @import url('https://fonts.googleapis.com/css?family=Londrina+Outline');
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
-
 .login-title {
  color: #9CFF60;
- -webkit-text-stroke: 2px #9CFF60;
+ -webkit-text-stroke: 1px #9CFF60;
  -webkit-text-fill-color: #88cb5f00;
  font-family: 'Roboto Mono';
  letter-spacing: -4px;
  font-size: 55px;
  align-self: center;
  margin: 30px 30px;
- z-index: 2;
+ z-index: 4;
 }
 
 .login-container {
-    position: relative;
+    position: absolute;
+    margin: auto;
     align-self: center;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     border: 2px solid #9CFF60;
     width: 750px;
+    z-index: 5;
+    
 
 }
 
@@ -35,7 +37,7 @@
     padding: 15px 12px 15px 12px;
     margin: 30px;
     align-self: center;
-    z-index: 2;
+    z-index: 4;
 
 }
 .login-button:hover {
@@ -47,13 +49,52 @@
     height: 100%;
     width: 100%;
     z-index: 1;
-    border: 10px solid #9CFF60;
-    background-color: rgba(159,79,79,.34);
-    filter: blur(150px);
-    animation: bg-color 7s infinite;
-    z-index: 1;
+    border: 65px solid rgb(0, 0, 0); 
+    background-color: rgba(122, 40, 40, 0.836);
+    filter: blur(45px);
+    animation: bg-color 5s infinite; 
+    z-index: 2;
+    
+}
+.login-background-light {
+    position: absolute;
+    height: 100%;
+    width: 3%;
+    left: -100px;
+    border-top: 75px solid rgb(0, 0, 0);
+    border-bottom: 75px solid rgb(0, 0, 0);
+    background-color: #ffffff;
+    filter: blur(65px);
+    -webkit-animation: data-flow 1.7s infinite;
+    animation: data-flow 1.7s infinite;
+    z-index: 3;
+}
+.login-light-border {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 75px solid rgb(0, 0, 0); 
+    background-color: rgba(122, 40, 40, 0);
+    filter: blur(45px);
+    z-index: 4;
 }
 
+.light-1 {
+    animation-delay: .8s;
+}
+
+.light-2 {
+    animation-delay: 2s;
+}
+.light-3 {
+    animation-delay: .3s;
+}
+.light-4 {
+    animation-delay: 1.1s;
+}
+.light-5 {
+    animation-delay: 3.1s;
+}
 
 @media (min-width: 360px) {
     .login-title {
@@ -95,10 +136,15 @@
 }
 
 @keyframes bg-color {
-    0% { background-color: rgba(159,79,79,.34); }
-    20% { background-color:rgba(159, 147, 79, 0.34); }
-    40% { background-color:rgba(79, 159, 83, 0.34); }
-    60% { background-color:rgba(79, 94, 159, 0.34); }
-    80% { background-color: rgba(156, 79, 159, 0.34); }
-    100% { background-color: rgba(159,79,79,.34); }
+    0% { background-color: rgba(159,79,79,.836); }
+    20% { background-color:rgba(159, 147, 79, 0.836); }
+    40% { background-color:rgba(79, 159, 83,0.836); }
+    60% { background-color:rgba(79, 94, 159, 0.836); }
+    80% { background-color: rgba(156, 79, 159,0.836); }
+    100% { background-color: rgba(159,79,79,0.836); }
     }
+
+@keyframes data-flow {
+0% { left: -500px; }
+100% {left: 100vw; }
+}

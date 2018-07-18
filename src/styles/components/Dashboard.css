@@ -1,0 +1,51 @@
+.dashboard-container {
+  position: relative;
+  background-color: #2a313a;
+  width: 100vw;
+  height: 100vh; }
+
+.sidenav {
+  height: 100%;
+  /* 100% Full-height */
+  width: 0;
+  /* 0 width - change this with JavaScript */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Stay on top */
+  top: 0;
+  right: 0;
+  background-color: #2a313a;
+  /* Black*/
+  overflow-x: hidden;
+  /* Disable horizontal scroll */
+  padding-top: 60px;
+  /* Place content 60px from the top */
+  transition: 0.5s;
+  /* 0.5 second transition effect to slide in the sidenav */
+  color: #9CFF60; }
+
+.showsidenav {
+  width: 350px;
+  margin-left: 250px;
+  padding-left: 50px; }
+
+.dashboard-overlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  transition: ease .3s;
+  background-color: rgba(0, 0, 0, 0); }
+
+.show-overlay {
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.699); }
+
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+  background-color: #6cff60; }
+
+.toggle-menu {
+  position: fixed;
+  z-index: 3;
+  top: 10px;
+  right: 15px; }

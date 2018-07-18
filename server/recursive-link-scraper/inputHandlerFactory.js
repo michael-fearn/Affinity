@@ -1,4 +1,4 @@
-module.exports =  function inputFilterFactory(){
+module.exports =  function inputHandlerFactory(){
     
     let hrefState = {
         scanned:{},
@@ -6,6 +6,16 @@ module.exports =  function inputFilterFactory(){
     }
 
     return {
+        addToListsFromDb: function(input) {
+            input.map( obj => hrefState.scanned[obj.page] = 1)
+        },
+
+        currentCountForUrl: function(inputUrl)  {
+            if(hrefState.unscanned[inputUrl]) {
+                return hrefState.unscanned[inputUrl]
+            }
+        },
+
         addToLists: function(hrefList) {
 
             hrefList.reduce( (hrefState, url) => {
@@ -22,8 +32,8 @@ module.exports =  function inputFilterFactory(){
         },
 
         moveToBlacklist : function(inputUrl) {
-            hrefState.scanned[inputUrl.toPage] = hrefState.unscanned[inputUrl.toPage]
-            delete hrefState.unscanned[inputUrl.toPage]
+            hrefState.scanned[inputUrl] = hrefState.unscanned[inputUrl]
+            delete hrefState.unscanned[inputUrl]
 
         },
 

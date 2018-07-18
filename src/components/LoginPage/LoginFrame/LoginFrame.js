@@ -1,6 +1,5 @@
 import React from 'react';
 
-import './LoginFrame.css';
 function LoginFrame () {
     function login() {
         let { REACT_APP_DOMAIN, REACT_APP_CLIENT_ID } = process.env;
@@ -11,7 +10,15 @@ function LoginFrame () {
 
     return (
         <div className="login-container">
+            <div className="login-light-border"></div>
+            <div className="login-background-light light-1"></div>
+            <div className="login-background-light light-2"></div>
+            <div className="login-background-light light-3"></div>
+            <div className="login-background-light light-4"></div>
+            <div className="login-background-light light-5"></div>
+            <div className="login-background-light light-5"></div>
             <div className="login-background"></div>
+ 
             <h1 className="login-title">Affinity</h1>
             <div onClick={login} className="login-button">Login</div>
         </div>

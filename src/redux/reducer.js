@@ -1,10 +1,10 @@
-import { Object } from "core-js";
-
 let initialState = {
     newScanUrl: 'http://www.threadless.com',
     newScanDepth: 1,
     baseUrl: '',
-    scraperData: []
+    scraperData: [],
+    popularPages: [],
+    username: 'bob'
 }
 
 // TYPES
@@ -14,6 +14,8 @@ const RESET_NEW_SCAN = 'RESET_NEW_SCAN'
 const UPDATE_WORKING_DATA = 'UPDATE_WORKING_DATA'
 const UPDATE_BASE_URL = 'UPDATE_BASE_URL'
 const CLEAR_SCRAPER_DATA = 'CLEAR_SCRAPER_DATA'
+const UPDATE_POPULAR_PAGE_DATA = 'UPDATE_POPULAR_PAGE_DATA'
+const UPDATE_USER_NAME = 'UPDATE_USER_NAME'
 
 // REDUCER
 export default function reducer (state = initialState, action) {
@@ -31,7 +33,10 @@ export default function reducer (state = initialState, action) {
             return Object.assign({}, state, {baseUrl: action.payload})    
         case CLEAR_SCRAPER_DATA:
             return Object.assign({}, state, {scraperData: []})    
-
+        case UPDATE_POPULAR_PAGE_DATA:
+            return Object.assign({}, state, {popularPages: action.payload})
+        case UPDATE_USER_NAME:
+            return Object.assign({}, state, {username: action.payload})
         default:
         
             return state;
@@ -77,6 +82,12 @@ export const dashboardActions = {
         return {
             type: CLEAR_SCRAPER_DATA
         }
+    },
+    getPopularPages: (payload) => {
+        return {
+            type: UPDATE_POPULAR_PAGE_DATA,
+            payload
+        }
     }
 
 }
@@ -85,6 +96,15 @@ export const scraperDataActions = {
     updateScraperData: (payload) => {
         return {
             type: UPDATE_WORKING_DATA,
+            payload
+        }
+    }
+}
+
+export const navBarActions = {
+    editUserName: (payload) => {
+        return {
+            type: UPDATE_USER_NAME,
             payload
         }
     }

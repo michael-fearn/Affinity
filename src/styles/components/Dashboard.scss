@@ -30,7 +30,7 @@
     height: 100vh;
     position: fixed;
     transition: ease .3s;
-
+    z-index: -1;
     background-color: rgba(0, 0, 0, 0)
 }
 

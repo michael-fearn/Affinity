@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LoginFrame from './LoginFrame/LoginFrame';
-import Sunburst from '../ChartContainer/Sunburst';
-import data from './../ChartContainer/data';
+import ChartContainer from '../ChartContainer/ChartContainer';
 // import './LoginPage.css';
 
 export default class LoginPage extends Component {
@@ -32,12 +31,8 @@ export default class LoginPage extends Component {
                     null
                 )}
                     <div className="login-page-graph">
-                        <Sunburst
-                            
-                            data={data}
-                            width={window.innerWidth-5}
-                            height={window.innerHeight-5}
-                            />         
+                        <ChartContainer />
+
                     </div>
                     
                 </div>

@@ -1,7 +1,9 @@
-module.exports = function dictionaryBuilder (hrefList, from_page, current_node_index) {
+module.exports = function dictionaryBuilder (hrefList, from_page, current_node_index, inputHandler) {
   
   const reducedHrefList = hrefList.reduce((obj, url) => { 
-      obj[url] ? obj[url]++ : obj[url] = 1
+      if(!inputHandler.blacklistIncludes(url)) {
+        obj[url] ? obj[url]++ : obj[url] = 1
+      }
       return obj
   },{})
 

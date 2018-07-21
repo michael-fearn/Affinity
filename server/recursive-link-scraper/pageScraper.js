@@ -1,6 +1,5 @@
 const puppeteerParseMethod = require('./puppeteerParseMethod')
 const httpGetParseMethod = require('./httpGetParseMethod')
-const dictionaryBuilder = require('./dictionaryBuilder')
 
 module.exports = async function pageScraper(pageUrl) {
 
@@ -8,13 +7,11 @@ module.exports = async function pageScraper(pageUrl) {
         pageUrl = pageUrl + '/'
     }
 
-    let hrefList = await httpGetParseMethod(pageUrl)
+     let hrefList = await httpGetParseMethod(pageUrl)
         
-    if(!hrefList) {
+    if(!hrefList || !hrefList[0]) {
         hrefList =  await puppeteerParseMethod(pageUrl)
     }
-   
-    
    
     return hrefList
 }

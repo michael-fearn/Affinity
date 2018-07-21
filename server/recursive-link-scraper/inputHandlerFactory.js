@@ -32,13 +32,23 @@ module.exports =  function inputHandlerFactory(){
         },
 
         moveToBlacklist : function(inputUrl) {
+
+            if(!hrefState.unscanned[inputUrl]) {
+                hrefState.unscanned[inputUrl] = 1
+            }
             hrefState.scanned[inputUrl] = hrefState.unscanned[inputUrl]
             delete hrefState.unscanned[inputUrl]
 
         },
 
         blacklistIncludes: function(inputUrl) {
-            if(hrefState.scanned[inputUrl]) {
+
+            const deprotocolled = inputUrl.split( '/' ).splice(1, inputUrl.split('/').length-1).join('/')
+            // const protocol = pathArray[0];
+            // const host = pathArray[2];
+            // const deprotocolled = protocol + '//' + host + '/';
+
+            if(hrefState.scanned['https:/' + deprotocolled] || hrefState.scanned['http:/' + deprotocolled] ) {
                 return true
             }
             return false;

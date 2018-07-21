@@ -22,8 +22,8 @@ module.exports = async function httpGetParseMethod(url) {
 
     if(!hrefList[0]) {
         console.log("http get parse failed, using puppeteer")
-        return
+        return []
     }
     
-      return parseResultsCleaner(hrefList, url)
+    return parseResultsCleaner(hrefList, url)
 }

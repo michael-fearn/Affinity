@@ -31,8 +31,10 @@ function removeBadParseResults (hrefList, baseUrl) {
     
     return hrefList
         .filter( href => {
+            
             return  href
                     && href.startsWith('http')
+                    && !href.includes('#')
                     && href !== baseUrl
                     && !href.startsWith('#')  
                     && !href.startsWith(baseUrl + '#') 

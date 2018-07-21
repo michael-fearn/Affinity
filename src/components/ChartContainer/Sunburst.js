@@ -14,13 +14,29 @@ import * as utils from './utils';
  * height => Integer - Height of the Chart Container *
  */
 class Sunburst extends React.Component {
+
+  removePreviousChart(){
+     const chart = document.getElementById(`${this.props.keyId}-svg`);
+     while(chart.hasChildNodes()) {
+       chart.removeChild(chart.lastChild);
+     }
+
+     const tooltip = document.getElementById(`${this.props.keyId}`);
+     console.log(tooltip.childElementCount)
+     while(tooltip.childElementCount > 1) {
+       tooltip.removeChild(tooltip.children[1]);
+     }
+   }
+
   componentDidMount() {
     this.renderSunburst(this.props);
   }
   componentWillReceiveProps(nextProps) {
+    this.removePreviousChart();
     if (!isEqual(this.props, nextProps)) {
       this.renderSunburst(nextProps);
     }
+    
   }
   arcTweenData(a, i, node, x, arc) {  // eslint-disable-line
     const oi = d3.interpolate({ x0: (a.x0s ? a.x0s : 0), x1: (a.x1s ? a.x1s : 0) }, a);
@@ -103,8 +119,8 @@ class Sunburst extends React.Component {
       .on('mousemove', () => {
         if (self.props.tooltip) {
           tooltip
-            .style('top', `${d3.event.pageY - 50}px`)
-            .style('left', `${self.props.tooltipPosition === 'right' ? d3.event.pageX - 100 : d3.event.pageX - 50}px`);
+            .style('top', `${d3.event.pageY - 75}px`)
+            .style('left', `${self.props.tooltipPosition === 'right' ? d3.event.pageX - 100 : d3.event.pageX}px`);
         }
         return null;
       })

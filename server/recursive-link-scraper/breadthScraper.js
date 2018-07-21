@@ -1,8 +1,10 @@
 const pageScraper = require('./pageScraper')
 const dictionaryBuilder = require('./dictionaryBuilder');
+const chartDictionaryBuilder = require('./chartDictionaryBuilder')
 const inputHandlerFactory = require('./inputHandlerFactory')
 const getBaseUrl = require('./../helpers/getBaseUrl')
 const insertLinksIntoDb = require('./insertLinksIntoDb')
+const stratifyDictionaryBuilder = require
 
 module.exports = async function breadthSearch(url, maxDepth, socket, dbConn) {
 
@@ -14,7 +16,12 @@ module.exports = async function breadthSearch(url, maxDepth, socket, dbConn) {
     socket.emit('node zero', url)
 
     let nodeContainer =[]
-    let parentNode = [{from_page: getBaseUrl(url), to_page: url}]
+    let parentNode = [{from_page: '' , to_page: url}]
+    socket.emit('scrape data', {
+        parent: null,
+        name: url,
+        size: 0,
+    })
 
     let currentNode = []
     let currentNodeIndex = 0
@@ -31,26 +38,27 @@ module.exports = async function breadthSearch(url, maxDepth, socket, dbConn) {
                 
                 inputHandler.moveToBlacklist(currentUrl)
                 inputHandler.addToLists(hrefList)
-
-                const pageDictionary = dictionaryBuilder(hrefList, currentUrl, currentNodeIndex)
+                
+                const pageDictionary = dictionaryBuilder(hrefList, currentUrl, currentNodeIndex, inputHandler)
+                const chartDictionary = chartDictionaryBuilder(hrefList, currentUrl, currentNodeIndex, inputHandler)
                 currentNode = [...currentNode, ...pageDictionary];
                 
-                try {
-                    await dbConn.add_domain(getBaseUrl(currentUrl))
-                } catch(error) {
-                    console.log("domain exists")
-                }
-                try {
-                    await dbConn.add_page([getBaseUrl(currentUrl), currentUrl, Date.now()])
-                } catch(error) {
-                    console.log("page exists")
-                }
-                try {
-                    await insertLinksIntoDb(pageDictionary,dbConn)
-                } catch (error) {
-                    console.log("page/link pair exists") 
-                }
-                socket.emit('scrape data', pageDictionary)
+                // try {
+                //     await dbConn.add_domain(getBaseUrl(currentUrl))
+                // } catch(error) {
+                //     console.log("domain exists")
+                // }
+                // try {
+                //     await dbConn.add_page([getBaseUrl(currentUrl), currentUrl, Date.now()])
+                // } catch(error) {
+                //     console.log("page exists")
+                // }
+                // try {
+                //     await insertLinksIntoDb(pageDictionary,dbConn)
+                // } catch (error) {
+                //     console.log("page/link pair exists") 
+                // }
+                socket.emit('scrape data', chartDictionary)
 
     
                 

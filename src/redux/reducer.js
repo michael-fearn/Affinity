@@ -1,10 +1,13 @@
+import data from './../components/ChartContainer/data'
+
 let initialState = {
     newScanUrl: 'http://www.threadless.com',
-    newScanDepth: 1,
+    newScanDepth: 2,
     baseUrl: '',
     scraperData: [],
     popularPages: [],
-    username: 'bob'
+    username: 'bob',
+    chartData: data
 }
 
 // TYPES
@@ -23,11 +26,13 @@ export default function reducer (state = initialState, action) {
         case UPDATE_NEWSCAN_URL:
             return Object.assign({}, state, {newScanUrl: action.payload})
         case UPDATE_NEWSCAN_DEPTH:
+            
             return Object.assign({}, state, {newScanDepth: action.payload})
         case RESET_NEW_SCAN:
             console.log("reducer firing") 
-            return Object.assign({}, state, {newScanUrl: '', newScanDepth: 1})
+            return Object.assign({}, state, {newScanUrl: 'http://www.threadless.com', newScanDepth: 2})
         case UPDATE_WORKING_DATA:
+          //  console.log(state.scraperData)        
             return Object.assign({}, state, { scraperData: [...state.scraperData, ...action.payload]})
         case UPDATE_BASE_URL:
             return Object.assign({}, state, {baseUrl: action.payload})    

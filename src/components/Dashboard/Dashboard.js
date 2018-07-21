@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { dashboardActions } from './../../redux/reducer';
 import NavBar from './NavBar/NavBar';
 import axios from 'axios';
-import Sunburst from '../ChartContainer/Sunburst';
-import data from '../ChartContainer/data';
 import './Dashboard.css';
+import ChartContainer from '../ChartContainer/ChartContainer';
 
 class Dashboard extends Component{
     constructor(props){
@@ -22,6 +21,7 @@ class Dashboard extends Component{
     submitNewScanHandler = () => {
         let { newScanUrl, newScanDepth } = this.props
         console.log(newScanDepth)
+        this.props.updateScraperData({parent: null, name: newScanUrl})
         this.props.socket.emit('new scan', {
             newScanUrl,
             newScanDepth
@@ -42,16 +42,18 @@ class Dashboard extends Component{
             console.log("scraper has fired and client knows about it")
             this.props.resetSubmitNewScanHandler()
             this.props.setBaseUrl(baseUrl)
+            console.log(baseUrl)
         })
         this.props.socket.on('scrape data', (scraperData) => {
             this.props.updateScraperData(scraperData)
+            console.log("scrapeData fired")
         })
     }
 
     OpenNavMenuHandler = () => {
-        if(this.state.getPopularPages) {
-            this.getPopularPagesHandler()
-        }
+        // if(this.state.getPopularPages) {
+        //     this.getPopularPagesHandler()
+        // }
         this.setState({showNavBar: !this.state.showNavBar})
         console.log(1111111111)
 
@@ -59,7 +61,7 @@ class Dashboard extends Component{
 
     render() {
 
-
+        // console.log(JSON.stringify(this.props.chartData))
         return(
             <div className="dashboard-container">
 
@@ -86,12 +88,7 @@ class Dashboard extends Component{
                     null
                 )}
             </div>
-                <Sunburst 
-                    data={data}
-                    height={window.innerHeight-5}
-                    width={window.innerWidth-5}
-                    scale="exponential"
-                />
+                <ChartContainer />
 
 
             </div>

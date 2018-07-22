@@ -1,57 +1,55 @@
 import React, { Component } from 'react';
 import Sunburst from './Sunburst';
 import { connect } from 'react-redux';
-import _ from 'lodash'
 
 class ChartContainer extends Component {
     constructor(props){
-        super()
+        super(props)
 
         this.state = {
-            dataTree: {}
+            dataTree: []
         }
     }
+
     componentWillReceiveProps() {
         this.setState({
-            dataTree: this.transformToTree(this.props.chartData, this.props.baseUrl)
+            dataTree: this.transformToTree(this.props.scraperData)
          })
     }
 
-
-    transformToTree = (arr, baseUrl) => {
+    transformToTree = (arr) => {
        
-       let mappedArr = {[this.props.baseUrl]: { name: this.props.baseUrl, parent: null, children: []}},
-        mappedElem,
-        arrElem
+        let mappedArr = {[this.props.baseUrl]: { name: this.props.baseUrl, parent: null, children: []}}
+        let mappedElem = {}
+        let arrElem = {}
+        let tree = []
         
-    // First map the nodes of the array to an object -> create a hash table.
-    for(let i = 0, len = arr.length; i < len; i++) {
-      arrElem = arr[i];
-      mappedArr[arrElem.name] = arrElem;
-      mappedArr[arrElem.name]['children'] = [];
-    }
-  
-  
-    for (let name in mappedArr) {
-      if (mappedArr.hasOwnProperty(name)) {
-        mappedElem = mappedArr[name];
-        // If the element is not at the root level, add it to its parent array of children.
-        if (mappedElem.parent) {
-          mappedArr[mappedElem['parent']]['children'].push(mappedElem);
+        // First map the nodes of the array to an object -> create a hash table.
+        for(let i = 0, len = arr.length; i < len; i++) {
+            arrElem = arr[i];
+            mappedArr[arrElem.name] = arrElem;
+            mappedArr[arrElem.name]['children'] = [];
         }
-        
-      }
+        for (let name in mappedArr) {
+            if (mappedArr.hasOwnProperty(name)) {
+                mappedElem = mappedArr[name];
+                if (mappedElem.parent) {
+                    mappedArr[mappedElem['parent']]['children'].push(mappedElem);
+                }
+                else {
+                    tree.push(mappedElem);
+                }
+            }
+        }
+        console.log(tree)
+        return tree;  
     }
-    return mappedArr[baseUrl];  
-      }
 
     render() {
-
-        console.log(this.props.chartData)
         return (
             <div>
                 <Sunburst 
-                    data={this.state.dataTree}
+                    data={this.state.dataTree[0]}
                     // onSelect={this.onSelect}
                     height={window.innerHeight-5}
                     width={window.innerWidth-5}
@@ -67,7 +65,7 @@ class ChartContainer extends Component {
 }
 function mapStateToProps(state){
     return {
-        chartData: state.scraperData,
+        scraperData: state.scraperData,
         baseUrl: state.baseUrl
     }
 }

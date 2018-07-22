@@ -214,7 +214,7 @@ body {
   position: absolute;
   height: 100%;
   width: 100%;
-  border: 75px solid black;
+  border: 75px solid rgba(0, 0, 0, 0.404);
   background-color: rgba(122, 40, 40, 0);
   filter: blur(45px);
   z-index: 4; }

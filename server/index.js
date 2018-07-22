@@ -32,27 +32,27 @@ io.on('connection', socket => {
         console.log('receiving new scan data')
 
         const { newScanUrl, newScanDepth } = newScanData
-        // const baseUrl = getBaseUrl(newScanUrl)
-        // //
-        // // Is good url? if so check db to see if it already exists
-        // //
-        // let isGoodUrl = false
+        const baseUrl = getBaseUrl(newScanUrl)
+        //
+        // Is good url? if so check db to see if it already exists
+        //
+        let isGoodUrl = false
 
-        // try {
-        //   isGoodUrl = await axios.get(baseUrl)
-        // } catch(err) {
-        //     console.log('bad new scan url')
-        //     socket.emit('bad url')
-        // }
+        try {
+          isGoodUrl = await axios.get(baseUrl)
+        } catch(err) {
+            console.log('bad new scan url')
+            socket.emit('bad url')
+        }
 
-        // if (isGoodUrl) {
+        if (isGoodUrl) {
         //     let doesDomainExist = await dbConn.does_domain_exist(baseUrl)
         //     if(!doesDomainExist[0]) {
                 breadthScraper(newScanUrl, +newScanDepth, socket, dbConn)
         //     } else {
         //         breadthDbQuery(socket, dbConn, newScanUrl, newScanDepth)
         //     }
-        // }
+        }
 
         // function to handlee adding data to database
     })

@@ -4,8 +4,8 @@ const parseResultsCleaner = require('./parseResultsCleaner')
 
 
 module.exports = async function puppeteerParseMethod(url) {
-    let pageBody = {}
-    let hrefList = []
+    let rawHrefList = []
+    
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
     
@@ -16,19 +16,21 @@ module.exports = async function puppeteerParseMethod(url) {
         return []
     }
     try {
-        pageBody = await page.evaluate( () => document.body.innerHTML)
+        rawHrefList = await page.evaluate( () => [...document.links].map(element => element.href))
     } catch(error) {
         console.log(error)
         await browser.close()
         return []
     }
 
-    const $ = cheerio.load(pageBody)
-    $('a').each( (i, element) => hrefList[i] = $(element).attr().href )
+    // const $ = cheerio.load(pageBody)
+    // $('a').each( (i, element) => hrefList[i] = $(element).attr().href )
    
     await browser.close()
-
-    return parseResultsCleaner(hrefList, url)
+    
+    let cleanedHrefList = parseResultsCleaner(rawHrefList, url)
+    //console.log('cleanedHref', cleanedHrefList)
+    return cleanedHrefList
 }
 // ~.520s overhead to launch and end puppeteer
 

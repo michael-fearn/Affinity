@@ -18,6 +18,7 @@ const UPDATE_WORKING_DATA = 'UPDATE_WORKING_DATA'
 const UPDATE_BASE_URL = 'UPDATE_BASE_URL'
 const CLEAR_SCRAPER_DATA = 'CLEAR_SCRAPER_DATA'
 const UPDATE_POPULAR_PAGE_DATA = 'UPDATE_POPULAR_PAGE_DATA'
+const UPDATE_USER_DOMAINS = 'UPDATE_USER_DOMAINS'
 const UPDATE_USER_NAME = 'UPDATE_USER_NAME'
 
 // REDUCER
@@ -33,7 +34,7 @@ export default function reducer (state = initialState, action) {
             return Object.assign({}, state, {newScanUrl: 'http://www.threadless.com', newScanDepth: 2})
         case UPDATE_WORKING_DATA:
           //  console.log(state.scraperData)        
-            return Object.assign({}, state, { scraperData: [...state.scraperData, ...action.payload]})
+            return Object.assign({}, state, { scraperData: [...action.payload, ...state.scraperData]})
         case UPDATE_BASE_URL:
             return Object.assign({}, state, {baseUrl: action.payload})    
         case CLEAR_SCRAPER_DATA:

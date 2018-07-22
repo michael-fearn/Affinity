@@ -9,6 +9,9 @@ const stratifyDictionaryBuilder = require
 module.exports = async function breadthSearch(url, maxDepth, socket, dbConn) {
 
     if(!url.endsWith('/')) url = url + '/'
+    if(!url.startsWith('https')) {
+        url = 'https' + url.slice(4)
+     }
     let inputHandler = inputHandlerFactory()
     
    //let response = await dbConn.get_pages() //building blacklist from db
@@ -58,6 +61,8 @@ module.exports = async function breadthSearch(url, maxDepth, socket, dbConn) {
                 // } catch (error) {
                 //     console.log("page/link pair exists") 
                 // }
+                //console.log(chartDictionary)
+                console.log("listlength" ,inputHandler.listLength())
                 socket.emit('scrape data', chartDictionary)
 
     

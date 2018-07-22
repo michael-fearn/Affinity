@@ -42,16 +42,22 @@ module.exports =  function inputHandlerFactory(){
         },
 
         blacklistIncludes: function(inputUrl) {
-
-            const deprotocolled = inputUrl.split( '/' ).splice(1, inputUrl.split('/').length-1).join('/')
-            // const protocol = pathArray[0];
-            // const host = pathArray[2];
-            // const deprotocolled = protocol + '//' + host + '/';
-
-            if(hrefState.scanned['https:/' + deprotocolled] || hrefState.scanned['http:/' + deprotocolled] ) {
+            if(hrefState.scanned[inputUrl]) {
                 return true
             }
             return false;
+        },
+
+        whiteListIncludes: function(inputUrl) {
+            if(hrefState.unscanned[inputUrl]) {
+                return true
+            }
+            return false;
+        },
+
+        // DEBUG TOOLS
+        listLength: function() {
+            return Object.keys(hrefState.scanned).length + Object.keys(hrefState.unscanned).length
         }
 
     }

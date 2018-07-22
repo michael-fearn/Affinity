@@ -12,6 +12,6 @@ module.exports = async function pageScraper(pageUrl) {
     if(!hrefList || !hrefList[0]) {
         hrefList =  await puppeteerParseMethod(pageUrl)
     }
-   
+    // console.log(hrefList)
     return hrefList
 }

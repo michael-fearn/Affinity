@@ -1,7 +1,7 @@
 module.exports = function dictionaryBuilder (hrefList, from_page, current_node_index, inputHandler) {
   
   const reducedHrefList = hrefList.reduce((obj, url) => { 
-      if(!inputHandler.blacklistIncludes(url)) {
+      if(!inputHandler.blacklistIncludes(url) || !inputHandler.whiteListIncludes(url)) {
         obj[url] ? obj[url]++ : obj[url] = 1
       }
       return obj
@@ -17,6 +17,6 @@ module.exports = function dictionaryBuilder (hrefList, from_page, current_node_i
       current_node_index
     })
   }
-
+  console.log('unique urls added',Object.keys(dictionary).length)
   return dictionary
 }

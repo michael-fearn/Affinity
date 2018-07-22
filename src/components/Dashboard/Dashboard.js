@@ -16,11 +16,10 @@ class Dashboard extends Component{
         }
     
     }
-
-
     submitNewScanHandler = () => {
+        this.props.clearScraperData()
         let { newScanUrl, newScanDepth } = this.props
-        console.log(newScanDepth)
+
         this.props.updateScraperData({parent: null, name: newScanUrl})
         this.props.socket.emit('new scan', {
             newScanUrl,

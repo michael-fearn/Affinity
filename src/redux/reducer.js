@@ -7,7 +7,8 @@ let initialState = {
     scraperData: [],
     popularPages: [],
     username: 'bob',
-    chartData: data
+    chartData: data,
+    renderCount: 0
 }
 
 // TYPES
@@ -20,6 +21,7 @@ const CLEAR_SCRAPER_DATA = 'CLEAR_SCRAPER_DATA'
 const UPDATE_POPULAR_PAGE_DATA = 'UPDATE_POPULAR_PAGE_DATA'
 const UPDATE_USER_DOMAINS = 'UPDATE_USER_DOMAINS'
 const UPDATE_USER_NAME = 'UPDATE_USER_NAME'
+const INCREMENT_RERENDER_COUNT = 'INCREMENT_RERENDER_COUNT'
 
 // REDUCER
 export default function reducer (state = initialState, action) {
@@ -27,18 +29,19 @@ export default function reducer (state = initialState, action) {
         case UPDATE_NEWSCAN_URL:
             return Object.assign({}, state, {newScanUrl: action.payload})
         case UPDATE_NEWSCAN_DEPTH:
-            
             return Object.assign({}, state, {newScanDepth: action.payload})
         case RESET_NEW_SCAN:
             console.log("reducer firing") 
             return Object.assign({}, state, {newScanUrl: 'http://www.threadless.com', newScanDepth: 2})
         case UPDATE_WORKING_DATA:
-          //  console.log(state.scraperData)        
-            return Object.assign({}, state, { scraperData: [...action.payload, ...state.scraperData]})
+            console.log(state.scraperData)        
+            return Object.assign({}, state, { scraperData: [...action.payload, ...state.scraperData ]})
         case UPDATE_BASE_URL:
             return Object.assign({}, state, {baseUrl: action.payload})    
-        case CLEAR_SCRAPER_DATA:
-            return Object.assign({}, state, {scraperData: []})    
+        case INCREMENT_RERENDER_COUNT:
+            return Object.assign({}, state, {renderCount: state.renderCount + 1})
+            case CLEAR_SCRAPER_DATA:
+            return Object.assign({}, state, {scraperData: [], renderCount: 0})    
         case UPDATE_POPULAR_PAGE_DATA:
             return Object.assign({}, state, {popularPages: action.payload})
         case UPDATE_USER_NAME:
@@ -94,6 +97,12 @@ export const dashboardActions = {
             type: UPDATE_POPULAR_PAGE_DATA,
             payload
         }
+    },
+    editUserName: (payload) => {
+        return {
+            type: UPDATE_USER_NAME,
+            payload
+        }
     }
 
 }
@@ -112,6 +121,13 @@ export const navBarActions = {
         return {
             type: UPDATE_USER_NAME,
             payload
+        }
+    }
+}
+export const chartContainerActions = {
+    incrementRenderCount: () => {
+        return  {
+            type: INCREMENT_RERENDER_COUNT
         }
     }
 }

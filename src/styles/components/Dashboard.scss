@@ -6,25 +6,72 @@
 }
 
 .sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
+    height: 100%;
+    width: 0; 
+    position: fixed; 
+    z-index: 1;
     top: 0;
     right: 0;
-    background-color: rgb(42, 49, 58); /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    background-color: rgb(42, 49, 58); 
+    overflow-x: hidden; 
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 60px; 
+    transition: 0.5s; 
     color: #9CFF60;
     
 }
 .showsidenav {
     width: 350px;
     margin-left:250px;
-    padding-left: 50px; 
+    
+    border-left: 2px solid #9CFF60;
 }
 
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.nav-button {
+    
+    text-align: center;
+    color: #9CFF60;
+    font-family: 'Roboto Mono';
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 2px solid #9CFF60;
+    border-radius: 5px;
+    /* width: 150px; */
+    padding: 10px 10px 10px 10px;
+    margin: 10px;
+    z-index: 2; 
+}
+.nav-button:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    transition-property: opacity, filter;
+    transition-duration: 0.15s;
+    transition-timing-function: linear;
+}
+.nav-input {
+    text-align: center;
+    color: #9CFF60;
+    font-family: 'Roboto Mono';
+    font-size: 10px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 2px solid #9CFF60;
+    border-radius: 5px;
+    width: 200px;
+    padding: 10px 10px 10px 10px;
+    margin: 2px;
+    z-index:2;
+}
+p {
+    text-align: center;
+    margin: 4px;
+}
 .dashboard-overlay {
     width: 100vw;
     height: 100vh;
@@ -43,6 +90,7 @@
 .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
     background-color: #6cff60;
 }
+
 .toggle-menu {
    position: fixed;
    z-index: 3;
@@ -50,3 +98,39 @@
    right: 15px;
 
 }
+
+.rerender-button {
+    position: absolute;
+    text-align: center;
+    color: #9CFF60;
+    font-family: 'Roboto Mono';
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 2px solid #9CFF60;
+    border-radius: 5px;
+    /* width: 150px; */
+    padding: 10px 10px 10px 10px;
+    margin: 15px;
+    z-index: 2;    
+}
+.rerender-button:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    transition-property: opacity, filter;
+    transition-duration: 0.15s;
+    transition-timing-function: linear;
+}
+
+.update-status {
+    margin-left: 15px;
+    margin-top: 65px;
+    color: #9CFF60;
+    font-family: 'Roboto Mono';
+    position: absolute;
+   
+}
+
+.hidden {
+    display: none;
+}
+

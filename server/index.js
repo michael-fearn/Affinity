@@ -1,22 +1,29 @@
 const express = require('express')
 const massive = require('massive')
-const app = express()
-const http = require('http')
+const session = require('express-session')
 const socket = require('socket.io')
-const port = 4000;
+const http = require('http')
+const axios = require('axios')
+
+const app = express()
 const server = http.createServer(app)
 const io = socket(server)
+
 require('dotenv').config()
-const axios = require('axios')
+
+server.listen(process.env.SERVER_PORT, () => console.log(`listening on port ${process.env.SERVER_PORT}`))
 
 
 // HELPERS
-const dbHandler = require('./helpers/dbHandlerFactory.js')
 const getBaseUrl = require('./helpers/getBaseUrl')
 const breadthScraper =  require('./recursive-link-scraper/breadthScraper.js')
 const breadthDbQuery = require('./breadthDbQuery');
-let dbConn
+
+// BODY PARSER
+app.use(express.json())
+
 // DB CONNNECTION
+let dbConn
 massive(process.env.CONNECTION_STRING)
     .then(db => app.set('db', db))
     .then(() => {
@@ -25,9 +32,18 @@ massive(process.env.CONNECTION_STRING)
     })
     .catch(error => console.log(error))
 
+
+// SESSION
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true
+}))
+
+
 // SOCKETS
 io.on('connection', socket => {
-    console.log('initial connection')
+    console.log('user Connected')
     socket.on('new scan', async (newScanData) => {
         console.log('receiving new scan data')
 
@@ -57,10 +73,10 @@ io.on('connection', socket => {
         // function to handlee adding data to database
     })
 
-    // socket.on('loading page', () => {
-    //     breadthDbQuery(socket, dbConn)
-    //     socket.disconnect
-    // })
+    socket.on('landing page', () => {
+        breadthDbQuery(socket, dbConn)
+        // socket.disconnect
+    })
     // check 
     // socket.on('new scan', (url, depth) => {
     //     breadth
@@ -68,21 +84,26 @@ io.on('connection', socket => {
 
 })
 
+// MIDDLEWARE
+
 
 // CONTROLLERS
 const authController = require('./controllers/authController')
-//const dbController = require('./controllers/dbCont     
+const dbController = require('./controllers/dbController')    
 
-// // ENDPOINTS
+
+// ENDPOINTS
 app.get('/auth/callback', authController);
-// app.get('/api/get/domains', verifyUser, dbController.getDomains) 
+app.get('/api/username', dbController.getUserName)
+app.put('/api/username', dbController.updateUserName)
+//app.get('/api/get/domains', verifyUser, dbController.getDomains)
+ app.get('/api/get/landingpagedata/', (req, res)=> {
+    console.log('hit')
+    res.status(200)
+})
+//app.post('api/post/scrapedata', dbController.postScrapeData)
 // app.get('/api/get/pages/:domainId', dbController.getPages) //if id does not exist return top pages
 // // verifyUser => is user id associated with Domain id
 // app.post('/api/user', verifyUser, dbController.newUser)
-// ap.put('/api/user', verifyUser, dbController.updateUser)
+
 // app.delete('/api/remove/:domainId', verifyUser, dbController.deleteDomain)
-
-
-
-
-server.listen(port, () => console.log('listening on port 4000'))

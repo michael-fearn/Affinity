@@ -1,1 +1,1 @@
-SELECT page FROM page;
+SELECT name FROM pages;

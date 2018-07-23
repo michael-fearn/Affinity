@@ -1,17 +1,17 @@
-SELECT to_page, SUM(count) as count
-FROM site 
-    JOIN page ON site.domain = page.domain
-    JOIN link ON page.page = link.from_page
+SELECT num, SUM(size) as size
+FROM domains 
+    JOIN pages ON domains.domain = pages.domain
+    JOIN links ON pages.name = links.parent
 WHERE 
-    site.domain = $1
-AND link.to_page like $2 
-AND to_page NOT IN (
-    SELECT page
-    FROM page
+    domains.domain = $1
+AND links.name like $2 
+AND name NOT IN (
+    SELECT parent
+    FROM pages
     )
 group BY
-    site.domain, to_page , count
+    domains.domain, name , size
 ORDER BY
-    count
+    size
     DESC
 LIMIT 1;

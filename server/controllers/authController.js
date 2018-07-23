@@ -7,7 +7,7 @@ let {
 } = process.env
 
 module.exports = async (req, res) => {
-    console.log(req.query)
+    
     let payload = {
         client_id: REACT_APP_CLIENT_ID,
         client_secret: CLIENT_SECRET,
@@ -30,22 +30,17 @@ module.exports = async (req, res) => {
         }`
     );
     
-    res.redirect('http://localhost:3000/#/dashboard')
-
-    // const db = req.app.get('db');
-    // let { sub, name, picture } = userData.data;
-    // let userExists = await db.find_user([sub]);
-    // if (userExists[0]) {
-    //   req.session.user = userExists[0];
-    //   res.redirect('http://localhost:3000/#/private');
-    // } else {
-    //   db.create_user([sub, name, picture]).then(createdUser => {
-    //     req.session.user = createdUser[0];
-    //     res.redirect('http://localhost:3000/#/private');
-    //   });
-    //   // let createdUser = await db.create_user([sub, name, picture]);
-    //   // req.session.user = createdUser[0];
-    //   // res.redirect('/')
-    // }
-
+    const dbConn = req.app.get('db');
+    let { sub, name } = userData.data;
+    let userExists = await dbConn.find_user([sub]);
+    
+    if (userExists[0]) {
+      req.session.user = userExists[0];
+      res.redirect('http://localhost:3000/#/dashboard');
+    } else {
+      dbConn.create_user([sub, name]).then(createdUser => {
+        req.session.user = createdUser[0];
+        res.redirect('http://localhost:3000/#/dashboard');
+      });
+    }
 }

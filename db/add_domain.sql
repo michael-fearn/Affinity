@@ -1,2 +1,2 @@
-INSERT INTO domain ( domain )
+INSERT INTO domains ( domain )
 VALUES ( $1 )

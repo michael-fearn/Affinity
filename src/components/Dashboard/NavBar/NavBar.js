@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NewScan from './NewScan/NewScan';
+import axios from 'axios';
 import DisplayButton from './DisplayButton/DisplayButton'
 import { navBarActions } from './../../../redux/reducer'
 import { connect } from 'react-redux';
@@ -13,13 +14,13 @@ class NavBar extends Component {
         }
     }
     editUserNameHandler = () => {
-       const payload =  this.props.username;
-      // axios.put('/api/user', payload)
+        const payload = { user_name: this.props.username };
+        axios.put('/api/username', payload)
         this.setState({editUserName: false})
     }
     render() {
         return (
-        <div>
+        <div className="nav-container">
             { this.state.editUserName ? (
                 <div>
                     <input

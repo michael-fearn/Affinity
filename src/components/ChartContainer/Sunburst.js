@@ -1,18 +1,7 @@
 import React from 'react';
-import { isEqual } from 'lodash/lang';
 import * as d3 from 'd3';
 import * as utils from './utils';
-/**
- * Sunburst Chart React Stateless Component with the following allowable Props *
- * data => JSON Array - Typically same for every Sunburst Chart *
- * scale => String - Options: linear | exponential - Linear renders each arc with same radii, Exponential reduces gradually by SquareRoot *
- * onSelect => Function - Called on Arc Click for re-rendering the chart and passing back to User as props *
- * tooltip => Boolean - Display Tooltip or not *
- * tooltipContent => HTMLNode - Customized Node for Tooltip rendering *
- * keyId => String - Unique Id for Chart SVG *
- * width => Integer - Width of the Chart Container *
- * height => Integer - Height of the Chart Container *
- */
+
 class Sunburst extends React.Component {
 
   removePreviousChart(){
@@ -22,7 +11,6 @@ class Sunburst extends React.Component {
      }
 
      const tooltip = document.getElementById(`${this.props.keyId}`);
-     console.log(tooltip.childElementCount)
      while(tooltip.childElementCount > 1) {
        tooltip.removeChild(tooltip.children[1]);
      }
@@ -31,13 +19,12 @@ class Sunburst extends React.Component {
   componentDidMount() {
     this.renderSunburst(this.props);
   }
+
   componentWillReceiveProps(nextProps) {
-    this.removePreviousChart();
-    if (!isEqual(this.props, nextProps)) {
-      this.renderSunburst(nextProps);
-    }
-    
+      this.removePreviousChart();
+      this.renderSunburst(nextProps);    
   }
+
   arcTweenData(a, i, node, x, arc) {  // eslint-disable-line
     const oi = d3.interpolate({ x0: (a.x0s ? a.x0s : 0), x1: (a.x1s ? a.x1s : 0) }, a);
     function tween(t) {
@@ -56,6 +43,7 @@ class Sunburst extends React.Component {
       return tween;
     }
   }
+  
   update(root, firstBuild, svg, partition, hueDXScale, x, y, radius, arc, node, self) {  // eslint-disable-line
     if (firstBuild) {
       firstBuild = false; // eslint-disable-line

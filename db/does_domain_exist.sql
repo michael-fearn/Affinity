@@ -1,3 +1,3 @@
 SELECT domain
-FROM domain
+FROM domains
 WHERE domain = $1;

@@ -1,2 +1,2 @@
-INSERT INTO page ( domain, page, scan_time)
+INSERT INTO pages ( domain, name, scan_time )
 values ( $1, $2, $3 );

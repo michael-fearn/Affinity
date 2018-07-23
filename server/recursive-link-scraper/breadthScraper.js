@@ -9,6 +9,7 @@ const stratifyDictionaryBuilder = require
 module.exports = async function breadthSearch(url, maxDepth, socket, dbConn) {
 
     if(!url.endsWith('/')) url = url + '/'
+    
     if(!url.startsWith('https')) {
         url = 'https' + url.slice(4)
      }
@@ -19,12 +20,12 @@ module.exports = async function breadthSearch(url, maxDepth, socket, dbConn) {
     socket.emit('node zero', url)
 
     let nodeContainer =[]
-    let parentNode = [{from_page: '' , to_page: url}]
-    socket.emit('scrape data', {
-        parent: null,
+    let parentNode = [{parent: '' , name: url}]
+    socket.emit('scrape data', [{
+        parent: '',
         name: url,
-        size: 0,
-    })
+
+    }])
 
     let currentNode = []
     let currentNodeIndex = 0
@@ -33,7 +34,7 @@ module.exports = async function breadthSearch(url, maxDepth, socket, dbConn) {
   
     for (let i = 0; i < maxDepth; i++) {
         for(let j = 0; j < parentNode.length; j++) {
-            const currentUrl = parentNode[j].to_page
+            const currentUrl = parentNode[j].name
             // Logic to determine whether or not a page has been scanned previously. If It has been, skip it.
             if (!inputHandler.blacklistIncludes(currentUrl)) {
                
@@ -46,21 +47,21 @@ module.exports = async function breadthSearch(url, maxDepth, socket, dbConn) {
                 const chartDictionary = chartDictionaryBuilder(hrefList, currentUrl, currentNodeIndex, inputHandler)
                 currentNode = [...currentNode, ...pageDictionary];
                 
-                // try {
-                //     await dbConn.add_domain(getBaseUrl(currentUrl))
-                // } catch(error) {
-                //     console.log("domain exists")
-                // }
-                // try {
-                //     await dbConn.add_page([getBaseUrl(currentUrl), currentUrl, Date.now()])
-                // } catch(error) {
-                //     console.log("page exists")
-                // }
-                // try {
-                //     await insertLinksIntoDb(pageDictionary,dbConn)
-                // } catch (error) {
-                //     console.log("page/link pair exists") 
-                // }
+                try {
+                    await dbConn.add_domain(getBaseUrl(currentUrl))
+                } catch(error) {
+                    console.log('domain exists')
+                }
+                try {
+                    await dbConn.add_page([getBaseUrl(currentUrl), currentUrl, Date.now()])
+                } catch(error) {
+                    console.log("page exists")
+                }
+                try {
+                    await insertLinksIntoDb(pageDictionary,dbConn)
+                } catch (error) {
+                    console.log("parent/child pair exists") 
+                }
                 //console.log(chartDictionary)
                 console.log("listlength" ,inputHandler.listLength())
                 socket.emit('scrape data', chartDictionary)
@@ -76,7 +77,7 @@ module.exports = async function breadthSearch(url, maxDepth, socket, dbConn) {
         parentNode = currentNode
         currentNode = []
         currentNodeIndex++
-        console.log(('end of node'))
+        console.log(('end of row'))
         socket.emit('end of node')
     }
     console.log('done')

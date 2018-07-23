@@ -6,15 +6,18 @@ function NewScan (props) {
 
     return (
         <div>
-            <h3>NewScan</h3>
-
+            <h3 className="nav-button">NewScan</h3>
+            <p>Url</p>
             <input 
+                className="nav-input"
                 placeholder="Url"
                 value={props.url}
                 onChange={(event) => props.newScanUrlHandler(event.target.value, "url")}
                 type="text"/>
             <br/>
-            <input 
+            <p>Depth</p> 
+            <input
+                className="nav-input"
                 placeholder="Depth"
                 value={props.depth}
                 onChange={(event) => props.newScanDepthHandler(event.target.value, "number")}

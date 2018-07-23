@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LoginFrame from './LoginFrame/LoginFrame';
 import ChartContainer from '../ChartContainer/ChartContainer';
+import axios from 'axios';
 // import './LoginPage.css';
 
 export default class LoginPage extends Component {
@@ -11,7 +12,14 @@ export default class LoginPage extends Component {
             showLoginFrame: true
         }
     }
-    
+    componentDidMount = () => {
+        this.props.socket.emit('landing page')
+        axios.get('/api/get/landingpagedata/')
+            .then( response => {
+                console.log(response)
+            })
+            .catch(err => console.log(err))
+    }
     render() {
 
         return (
@@ -31,7 +39,8 @@ export default class LoginPage extends Component {
                     null
                 )}
                     <div className="login-page-graph">
-                        <ChartContainer />
+                        <ChartContainer
+                            parent="login" />
 
                     </div>
                     

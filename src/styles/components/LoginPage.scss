@@ -38,5 +38,9 @@
 }
 .hide-button:hover {
     cursor: pointer;
+    opacity: 0.7;
+    transition-property: opacity, filter;
+    transition-duration: 0.15s;
+    transition-timing-function: linear;
 }
 

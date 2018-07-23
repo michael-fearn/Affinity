@@ -1,22 +1,26 @@
 module.exports = async function breadthDbQuery( socket, dbConn, url = '', maxNodeDepth = 2 ) {
     
-    if(!url.endsWith('/') && url) url = url + '/'
+    //if(!url.endsWith('/') && url) url = url + '/'
     let currentNode = []
     let currentNodeIndex = 0
-    let parentNode = [{to_page: url}] 
+    let parentNode = [{name: url}] 
 
     if(!url) {
-        parentNode = await dbConn.get_random_index_zero_node()
-        parentNode[0].to_page = parentNode[0].from_page
+        const name = await dbConn.get_random_index_zero_node()
+        console.log(2222, name[0].parent)
+        parentNode[0].name = name[0].parent
+    } else {
+
     }
 
-    socket.emit('node zero', parentNode[0].to_page)
+   // socket.emit('node zero', parentNode[0].name)
+   socket.emit('scrape data', parentNode)
         //console.log(parentNode)
     for(let i = 0; i < maxNodeDepth; i++) {
        // console.log(111)
         for(let j = 0; j < parentNode.length; j++) {
             
-            const currentUrl = parentNode[j].to_page
+            const currentUrl = parentNode[j].name
             const pageData = await dbConn.get_matching_from_pages(currentUrl)
             //console.log(2222, pageData)
             currentNode = [...currentNode, ...pageData]

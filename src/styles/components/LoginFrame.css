@@ -36,7 +36,11 @@
   z-index: 4; }
 
 .login-button:hover {
-  cursor: pointer; }
+  cursor: pointer;
+  opacity: 0.7;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear; }
 
 .login-background {
   position: absolute;

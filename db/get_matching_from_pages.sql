@@ -1,2 +1,2 @@
-SELECT * FROM link
-WHERE from_page = $1;
+SELECT * FROM links
+WHERE parent = $1;

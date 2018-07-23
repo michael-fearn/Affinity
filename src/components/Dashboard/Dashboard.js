@@ -12,8 +12,10 @@ class Dashboard extends Component{
 
         this.state = {
             showNavBar: false,
-            getPopularPages: true
+            getPopularPages: true,
+            renderCount: 0
         }
+
     
     }
     submitNewScanHandler = () => {
@@ -36,7 +38,10 @@ class Dashboard extends Component{
         this.setState({getPopularPages: false})
     }
 
-    componentDidMount () {
+    componentDidMount = async () => {
+        let response = await axios.get('/api/username')
+        console.log(response.data)
+        this.props.editUserName(response.data)
         this.props.socket.on( 'node zero', (baseUrl) => {
             console.log("scraper has fired and client knows about it")
             this.props.resetSubmitNewScanHandler()
@@ -45,7 +50,16 @@ class Dashboard extends Component{
         })
         this.props.socket.on('scrape data', (scraperData) => {
             this.props.updateScraperData(scraperData)
+            // if(!scraperData[0]){
+            //     const holder = Object.assign({},scraperData)
+            //     scraperData=[]
+            //     scraperData.push(holder)
+            // }
+            console.log(scraperData)
             console.log("scrapeData fired")
+        })
+        this.props.socket.on('landing page data', (landingPageData) => {
+            this.props.updateScraperData(landingPageData)
         })
     }
 
@@ -57,13 +71,16 @@ class Dashboard extends Component{
         console.log(1111111111)
 
     }
+    incrementRenderCount = () => {
+        this.setState({renderCount: this.state.renderCount + 1})
+    }
+
 
     render() {
 
         // console.log(JSON.stringify(this.props.chartData))
         return(
             <div className="dashboard-container">
-
                
                 <div 
                     onClick={this.OpenNavMenuHandler}
@@ -87,7 +104,9 @@ class Dashboard extends Component{
                     null
                 )}
             </div>
-                <ChartContainer />
+                <ChartContainer
+                    incrementRenderCount={this.incrementRenderCount}
+                    renderCount={this.state.renderCount} />
 
 
             </div>

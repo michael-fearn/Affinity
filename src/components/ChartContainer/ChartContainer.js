@@ -1,25 +1,56 @@
 import React, { Component } from 'react';
-import Sunburst from './Sunburst';
 import { connect } from 'react-redux';
+import SunburstContainer from './SunburstContainer';
+import { chartContainerActions } from '../../redux/reducer';
 
 class ChartContainer extends Component {
     constructor(props){
         super(props)
 
         this.state = {
-            dataTree: []
+            dataTree: [],
+            updateAvailable: ''
+        }
+        this.renderCount = 0
+        this.dataTree = []
+    }
+    getDerivedStateFromProps() {
+
+    }  
+    componentWillReceiveProps(newProps) {
+        this.dataTree = this.transformToTree(newProps.scraperData)
+
+        if(!this.props.scraperData[0]) {
+            this.renderCount = 0
+            this.setState({
+                updateAvailable: ''
+            })
+        }
+        this.renderCount++
+        if(this.renderCount > 10) {
+            this.showUpdateAvailable();
         }
     }
 
-    componentWillReceiveProps() {
+    showUpdateAvailable = () => {
         this.setState({
-            dataTree: this.transformToTree(this.props.scraperData)
-         })
+            updateAvailable: "Update available"
+        })
+    }
+
+    updateChild() {
+        this.Sunburst.forceUpdate();
+        this.setState({
+            updateAvailable: ''
+        })
     }
 
     transformToTree = (arr) => {
-       
-        let mappedArr = {[this.props.baseUrl]: { name: this.props.baseUrl, parent: null, children: []}}
+       if(!arr[0]) {
+           return []
+       }
+        //let mappedArr = {[this.props.baseUrl]: { name: this.props.baseUrl, parent: null, children: []}}
+        let mappedArr = {}
         let mappedElem = {}
         let arrElem = {}
         let tree = []
@@ -41,24 +72,22 @@ class ChartContainer extends Component {
                 }
             }
         }
-        console.log(tree)
+        console.log(1111,tree)
         return tree;  
     }
 
     render() {
+      //  console.log(this.state.dataTree)
         return (
             <div>
-                <Sunburst 
-                    data={this.state.dataTree[0]}
-                    // onSelect={this.onSelect}
-                    height={window.innerHeight-5}
-                    width={window.innerWidth-5}
-                    scale="linear"
-                    tooltipContent={<div class="sunburstTooltip" style="max-height: 750px;position:absolute; color:'black'; z-index:10; background: #e2e2e2; padding: 5px; text-align: center;" />}
-                    tooltip={true}
-                    keyId="anagraph"
-                    tooltipPosition="left"
-                />
+            <div className={`rerender-button${this.props.parent === 'login' ? ' hidden': ''}`} onClick={() => this.updateChild()}>re-render</div>
+            <h4 className={`update-status${this.props.parent === 'login' ? ' hidden': ''}`}>{this.state.updateAvailable}</h4>
+                <SunburstContainer
+                    parent={this.props.parent}
+                    showUpdateAvailable={this.showUpdateAvailable}
+                    renderCount={this.renderCount}
+                    ref={instance => { this.Sunburst = instance;}}
+                    dataTree={this.dataTree[0]}/>
             </div>
         );
     }
@@ -66,7 +95,9 @@ class ChartContainer extends Component {
 function mapStateToProps(state){
     return {
         scraperData: state.scraperData,
-        baseUrl: state.baseUrl
+        baseUrl: state.baseUrl,
+        renderCount: state.renderCount
+
     }
 }
 export default connect(mapStateToProps)(ChartContainer);

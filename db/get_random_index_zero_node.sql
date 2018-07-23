@@ -1,5 +1,5 @@
-SELECT from_page FROM link
+SELECT parent FROM links
 WHERE current_node_index = 0
-GROUP BY from_page
+GROUP BY parent
 ORDER BY random()
 LIMIT 1;

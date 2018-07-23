@@ -1,3 +1,3 @@
-SELECT page, scan_time 
-FROM page
-WHERE page = $1;
+SELECT name, scan_time 
+FROM pages
+WHERE name = $1;

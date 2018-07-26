@@ -3,7 +3,8 @@ const axios = require('axios');
 let {
     REACT_APP_CLIENT_ID,
     CLIENT_SECRET,
-    REACT_APP_DOMAIN
+    REACT_APP_DOMAIN,
+    FRONTEND_DOMAIN
 } = process.env
 
 module.exports = async (req, res) => {
@@ -35,12 +36,12 @@ module.exports = async (req, res) => {
     let userExists = await dbConn.find_user([sub]);
     
     if (userExists[0]) {
-      req.session.user = userExists[0];
-      res.redirect('http://localhost:3000/#/dashboard');
+        req.session.user = userExists[0];
+        res.redirect(`${FRONTEND_DOMAIN}/#/dashboard`);
     } else {
-      dbConn.create_user([sub, name]).then(createdUser => {
-        req.session.user = createdUser[0];
-        res.redirect('http://localhost:3000/#/dashboard');
-      });
+        dbConn.create_user([sub, name]).then(createdUser => {
+            req.session.user = createdUser[0];
+            res.redirect(`${FRONTEND_DOMAIN}/#/dashboard`);
+        });
     }
 }

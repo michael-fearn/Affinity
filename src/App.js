@@ -13,10 +13,10 @@ class App extends Component {
     super()
 
     this.state = {
-      endpoint: "http://localhost:4000",
+      endpoint: `${window.origin}`,
       loggedIn: false
     }
-    this.socket = socketIOClient(this.state.endpoint)
+    this.socket = socketIOClient()
   }
 
   isUserLoggedInHandler = () => {

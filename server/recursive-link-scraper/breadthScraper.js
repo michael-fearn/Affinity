@@ -59,7 +59,7 @@ module.exports = async function breadthSearch(input, maxDepth, socket, dbConn, p
                 inputHandler.addToLists(hrefList)
 
                 const chartDictionary = chartDictionaryBuilder(hrefList, currentUrl, currentNodeIndex, inputHandler)
-                currentNode = [...currentNode, ...pageDictionary]
+                currentNode = [...currentNode, ...chartDictionary]
 
                 
                 try {

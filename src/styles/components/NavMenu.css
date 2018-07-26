@@ -1,0 +1,211 @@
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  background-color: #2a313a;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s;
+  color: #9CFF60; }
+
+.showsidenav {
+  padding: 40px;
+  width: 400px;
+  margin-left: 2px;
+  border-left: 2px solid #9CFF60;
+  overflow: hidden; }
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px; }
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #00000000; }
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #97ff60;
+  border-radius: 5px; }
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  opacity: 0.7;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear; }
+
+.nav-container {
+  position: relative;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 3; }
+
+.nav-container > * {
+  margin: 10px; }
+
+.nav-new-scan-section {
+  text-align: center;
+  color: #9CFF60;
+  font-family: 'Roboto Mono';
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid #9CFF60;
+  border-radius: 5px;
+  /* width: 150px; */
+  z-index: 2; }
+
+.nav-new-scan {
+  border-bottom: 2px solid #9cff60;
+  border-radius: 5px;
+  padding: 10px; }
+
+.new-scan-input-container {
+  margin: 10px 20px 10px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; }
+
+.username-input {
+  position: relative;
+  z-index: 4;
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid #9CFF60;
+  border-radius: 5px;
+  width: 80%;
+  color: #9CFF60;
+  padding: 5px 6px;
+  border-right: 0px; }
+
+.username-button {
+  position: relative;
+  z-index: 4;
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid #9CFF60;
+  margin-left: -3px;
+  border-radius: 5px;
+  color: #9CFF60;
+  padding: 5px 6px;
+  width: 21%; }
+
+.username-button:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear; }
+
+.user-name:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear; }
+
+.nav-input {
+  text-align: right;
+  color: #9CFF60;
+  font-family: 'Roboto Mono';
+  font-size: 10px;
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid #9CFF60;
+  border-radius: 5px;
+  width: 200px;
+  padding: 10px 10px 10px 10px;
+  margin: 2px;
+  z-index: 2; }
+
+.nav-input-depth {
+  text-align: left;
+  width: 50px; }
+
+.dashboard-overlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  transition: ease .3s;
+  z-index: -1;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0); }
+
+.show-overlay {
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.699); }
+
+.new-scan-button {
+  position: relative;
+  background: rgba(0, 0, 0, 0);
+  border: 2px solid #9CFF60;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px 30px 10px 30px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  cursor: pointer;
+  color: #9cff60; }
+
+.new-scan-button:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear; }
+
+.edit-user {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 5px;
+  padding: 10px;
+  border: 2px solid #9CFF60; }
+
+.delete-button {
+  text-align: center;
+  color: #ff2d2d;
+  font-family: 'Roboto Mono';
+  font-weight: bold;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid #ff2d2d;
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 25px; }
+
+.delete-button:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear; }
+
+.delete-prompt {
+  position: fixed;
+  z-index: -10;
+  background-color: #0000009e;
+  display: none;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw; }
+
+.delete-prompt-window {
+  position: fixed;
+  z-index: -10;
+  opacity: 0;
+  height: 250px;
+  width: 400px;
+  background-color: #2a313a; }
+
+.show-prompt {
+  z-index: 20;
+  display: inline;
+  opacity: 1;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear; }

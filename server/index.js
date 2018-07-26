@@ -40,70 +40,105 @@ app.use(session({
     saveUninitialized: true
 }))
 
+// SCHEDULE DB CLEARING
+const schedule = require('node-schedule')
+const clearDb = schedule.scheduleJob(' */10 * * * *', () => {
+    // dbConn.db_table_schema()
+    console.log('cleardb')
+})
 
 // SOCKETS
 io.on('connection', socket => {
     console.log('user Connected')
+
+    socket.on('landing page', () => {
+        breadthDbQuery(socket, dbConn)
+    })
+
     socket.on('new scan', async (newScanData) => {
         console.log('receiving new scan data')
 
-        const { newScanUrl, newScanDepth } = newScanData
+        const { newScanUrl, newScanDepth, puppeteerOnly } = newScanData
         const baseUrl = getBaseUrl(newScanUrl)
-        //
-        // Is good url? if so check db to see if it already exists
-        //
+
         let isGoodUrl = false
 
         try {
-          isGoodUrl = await axios.get(baseUrl)
+            isGoodUrl = await axios.get(baseUrl)
         } catch(err) {
             console.log('bad new scan url')
             socket.emit('bad url')
         }
 
         if (isGoodUrl) {
-        //     let doesDomainExist = await dbConn.does_domain_exist(baseUrl)
-        //     if(!doesDomainExist[0]) {
-                breadthScraper(newScanUrl, +newScanDepth, socket, dbConn)
-        //     } else {
-        //         breadthDbQuery(socket, dbConn, newScanUrl, newScanDepth)
-        //     }
+                let achievedDepth = await breadthDbQuery(socket, dbConn, newScanUrl, +newScanDepth)
+                console.log(newScanDepth ,achievedDepth[0])
+                if(+newScanDepth - achievedDepth[0]) {
+                    console.log(achievedDepth[1], (+newScanDepth - achievedDepth[0]), false, achievedDepth[0])
+                    breadthScraper(achievedDepth[1], (+newScanDepth - achievedDepth[0]), socket, dbConn, puppeteerOnly, achievedDepth[0])
+                }
         }
-
-        // function to handlee adding data to database
     })
 
-    socket.on('landing page', () => {
-        breadthDbQuery(socket, dbConn)
-        // socket.disconnect
-    })
-    // check 
-    // socket.on('new scan', (url, depth) => {
-    //     breadth
-    // })
+    socket.on('get scan data', async (input) => {
+        const { url, depth } = input
+            let achievedDepth = await breadthDbQuery(socket, dbConn, url, depth)
 
+            if(depth - achievedDepth[0]) {
+                console.log(achievedDepth[1], (depth - achievedDepth[0]), false, achievedDepth[0])
+                breadthScraper(achievedDepth[1], (depth - achievedDepth[0]), socket, dbConn, false, achievedDepth[0])
+            }
+    })
 })
-
-// MIDDLEWARE
-
 
 // CONTROLLERS
 const authController = require('./controllers/authController')
 const dbController = require('./controllers/dbController')    
 
-
 // ENDPOINTS
 app.get('/auth/callback', authController);
 app.get('/api/username', dbController.getUserName)
 app.put('/api/username', dbController.updateUserName)
-//app.get('/api/get/domains', verifyUser, dbController.getDomains)
- app.get('/api/get/landingpagedata/', (req, res)=> {
-    console.log('hit')
-    res.status(200)
-})
-//app.post('api/post/scrapedata', dbController.postScrapeData)
-// app.get('/api/get/pages/:domainId', dbController.getPages) //if id does not exist return top pages
-// // verifyUser => is user id associated with Domain id
-// app.post('/api/user', verifyUser, dbController.newUser)
+app.get('/api/get/domains', dbController.getDomains)
+app.get('/api/get/pages', dbController.getPages)
+app.get('/api/verifyuser', (req , res) => {
+    if(req.session.user) {
+        res.send(true).status(200)
+    }
+    else {
 
-// app.delete('/api/remove/:domainId', verifyUser, dbController.deleteDomain)
+        res.send(false).status(200)
+    }
+})
+
+app.post('/api/post/domain', async (req, res) => {
+    if(req.session.user) {
+        
+        const { newScanUrl } = req.body;
+        let baseUrl = getBaseUrl(newScanUrl)
+        
+        if(!baseUrl.startsWith('https')) {
+            baseUrl = 'https' + baseUrl.slice(4)
+        }
+
+        let userData = await dbConn.find_user(req.session.user.auth_id)
+        let domainData = await dbConn.find_domain(baseUrl)
+        
+        if(!domainData[0]) {
+            await dbConn.add_domain(baseUrl)
+            domainData = await dbConn.find_domain(baseUrl)
+        }
+
+        dbConn.post_user_domain([userData[0].user_id, domainData[0].domain_id])
+            .catch((err) => {})
+        res.status(200)
+    }
+})
+
+app.delete('/api/user', async (req, res) => {
+    if(req.session.user) {
+        let userData = await dbConn.find_user(req.session.user.auth_id)
+        dbConn.delete_user(userData[0].auth_id)
+    }
+    res.status(401)
+})

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SunburstContainer from './SunburstContainer';
-import { chartContainerActions } from '../../redux/reducer';
+import { chartContainerActions } from './../../redux/reducer';
 
 class ChartContainer extends Component {
     constructor(props){
@@ -13,10 +13,23 @@ class ChartContainer extends Component {
         }
         this.renderCount = 0
         this.dataTree = []
+        this.Sunburst = React.createRef()
     }
-    getDerivedStateFromProps() {
 
-    }  
+    componentDidMount () {
+        this.props.socket.on('end of db search', () => {
+            if(this.Sunburst.current) {
+                this.updateChild()
+            }
+        })
+        if(this.props.parent === "login") {
+            this.props.socket.on('end of search', () => {
+                if(this.Sunburst.current) {
+                    this.updateChild()
+                }
+            })
+        }
+    }
     componentWillReceiveProps(newProps) {
         this.dataTree = this.transformToTree(newProps.scraperData)
 
@@ -28,7 +41,7 @@ class ChartContainer extends Component {
         }
         this.renderCount++
         if(this.renderCount > 10) {
-            this.showUpdateAvailable();
+            this.showUpdateAvailable()
         }
     }
 
@@ -39,54 +52,54 @@ class ChartContainer extends Component {
     }
 
     updateChild() {
-        this.Sunburst.forceUpdate();
+        this.Sunburst.current.forceUpdate()
         this.setState({
             updateAvailable: ''
         })
     }
 
     transformToTree = (arr) => {
-       if(!arr[0]) {
-           return []
-       }
-        //let mappedArr = {[this.props.baseUrl]: { name: this.props.baseUrl, parent: null, children: []}}
+        if(!arr[0]) {
+            return []
+        }
         let mappedArr = {}
         let mappedElem = {}
         let arrElem = {}
         let tree = []
         
-        // First map the nodes of the array to an object -> create a hash table.
-        for(let i = 0, len = arr.length; i < len; i++) {
-            arrElem = arr[i];
-            mappedArr[arrElem.name] = arrElem;
-            mappedArr[arrElem.name]['children'] = [];
+        for(let i = 0; i < arr.length; i++) {
+            arrElem = arr[i]
+            mappedArr[arrElem.name] = arrElem
+            mappedArr[arrElem.name]['children'] = []
         }
         for (let name in mappedArr) {
             if (mappedArr.hasOwnProperty(name)) {
-                mappedElem = mappedArr[name];
+                mappedElem = mappedArr[name]
                 if (mappedElem.parent) {
-                    mappedArr[mappedElem['parent']]['children'].push(mappedElem);
+                    if(mappedArr[mappedElem['parent']]) {
+                        mappedArr[mappedElem['parent']]['children'].push(mappedElem)
+                    }
                 }
                 else {
-                    tree.push(mappedElem);
+                    tree.push(mappedElem)
                 }
             }
         }
-        console.log(1111,tree)
-        return tree;  
+        return tree
     }
 
     render() {
-      //  console.log(this.state.dataTree)
         return (
             <div>
             <div className={`rerender-button${this.props.parent === 'login' ? ' hidden': ''}`} onClick={() => this.updateChild()}>re-render</div>
             <h4 className={`update-status${this.props.parent === 'login' ? ' hidden': ''}`}>{this.state.updateAvailable}</h4>
                 <SunburstContainer
+                    newScanUrlHandler={this.props.newScanUrlHandler}
+                    searchComplete={this.searchComplete}
                     parent={this.props.parent}
                     showUpdateAvailable={this.showUpdateAvailable}
                     renderCount={this.renderCount}
-                    ref={instance => { this.Sunburst = instance;}}
+                    ref={this.Sunburst}
                     dataTree={this.dataTree[0]}/>
             </div>
         );
@@ -95,9 +108,7 @@ class ChartContainer extends Component {
 function mapStateToProps(state){
     return {
         scraperData: state.scraperData,
-        baseUrl: state.baseUrl,
         renderCount: state.renderCount
-
     }
 }
-export default connect(mapStateToProps)(ChartContainer);
+export default connect(mapStateToProps, chartContainerActions)(ChartContainer);

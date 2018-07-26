@@ -26,25 +26,12 @@ CREATE TABLE links (
     name VARCHAR(2000),
     current_node_index INTEGER,
     size INTEGER,
-    UNIQUE ( parent, name)
+    UNIQUE (parent, name)
 );
 
 CREATE TABLE user_site_reference (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(user_id),
-    domain_id INTEGER REFERENCES domains(domain_id)
+    domain_id INTEGER REFERENCES domains(domain_id),
+    UNIQUE (user_id, domain_id)
 );
-
-
-
-SELECT to_page, SUM(count) as count
-FROM site 
-    JOIN page ON site.domain = page.domain
-    JOIN link ON page.page = link.from_page
-
-group BY
-    site.domain, to_page , count
-ORDER BY
-    count
-    DESC
-LIMIT 10;

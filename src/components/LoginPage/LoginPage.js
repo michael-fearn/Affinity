@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LoginFrame from './LoginFrame/LoginFrame';
 import ChartContainer from '../ChartContainer/ChartContainer';
-import axios from 'axios';
 // import './LoginPage.css';
 
 export default class LoginPage extends Component {
@@ -14,15 +13,10 @@ export default class LoginPage extends Component {
     }
     componentDidMount = () => {
         this.props.socket.emit('landing page')
-        axios.get('/api/get/landingpagedata/')
-            .then( response => {
-                console.log(response)
-            })
-            .catch(err => console.log(err))
     }
     render() {
 
-        return (
+        return ( 
             <div >
                 <div 
                     className="hide-button" 
@@ -34,12 +28,14 @@ export default class LoginPage extends Component {
                 <div className="login-page-container">
                 
                 { this.state.showLoginFrame ? (
-                    <LoginFrame className="login-page-frame" />  
+                    <LoginFrame 
+                        className="login-page-frame" />  
                 ) : (
                     null
                 )}
                     <div className="login-page-graph">
                         <ChartContainer
+                            socket={this.props.socket}
                             parent="login" />
 
                     </div>

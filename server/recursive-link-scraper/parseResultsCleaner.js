@@ -46,11 +46,10 @@ function removeBadParseResults (hrefList, baseUrl) {
 function ensureHttps (hrefList) {
     hrefList.forEach( href => {
         if(!href.startsWith('https')) {
-           href = 'https' + href.slice(4)
+            href = 'https' + href.slice(4)
         }
 
     })
-    //console.log(hrefList)
     return hrefList
 }
 
@@ -60,6 +59,6 @@ module.exports = function parseResultsCleaner (hrefList, baseUrl ) {
     const cleanedHrefList = removeBadParseResults(backSlashedHrefList, baseUrl)
     const fullUrlHrefList = addBaseUrl(cleanedHrefList,  baseUrl)
     const httpsHrefList = ensureHttps(fullUrlHrefList)
-    //console.log(httpsHrefList)
+
     return httpsHrefList
 }

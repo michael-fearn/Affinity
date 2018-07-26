@@ -10,21 +10,43 @@ class DisplayButton extends Component{
         }
     }
 
-    listBuilder() {
-
-    }
-
-    render() {    
-        return (
-            <div
-                className={`display-button-container${this.state.showList ? ' show-list' : '' }`}>
-                <div 
-                    onClick={() => this.setState({showList: !this.state.showList})}
-                    className={`display-button${this.state.showList ? ' shrink-button' : '' }`}>
-                    {this.props.buttonTitle}
+    render() { 
+        
+        const list = this.props.listArray.map( element => {
+            if(element.domain) {
+                
+                return (
+                    <div className="drop-down-item flex" key={element.domain}>
+                        <div onClick={ () => this.props.submitScanFromDisplayHandler(element.domain)}>{element.domain.substring(0, 30) + '...'}</div>
                     </div>
-                <div>{this.state.list}</div>
+                )
+
+            }
+            else {
+                return (
+                    <div className="drop-down-item flex" key={element.name+element.parent}>
+                        <div onClick={() => this.props.submitScanFromDisplayHandler(element.name)}>{element.name.substring(0, 30) + '...'}</div>
+                    </div>
+                )
+            }
+        })
+
+        return (
+            <div onClick={() => this.setState({showList: !this.state.showList})} className={`display-button${this.state.showList ? ' show-list' : '' }`}>
+                { this.props.buttonTitle }
+                <div className="display-button-container">
+                    {list}
+                </div>
             </div>
+            // <div
+            //     className={`display-button-container${this.state.showList ? ' show-list' : '' }`}>
+            //     <div 
+            //         onClick={() => this.setState({showList: !this.state.showList})}
+            //         className={`display-button${this.state.showList ? ' shrink-button' : '' }`}>
+            //         {this.props.buttonTitle}
+            //         </div>
+            //     <div>{this.state.list}</div>
+            // </div>
         )
     }
 }

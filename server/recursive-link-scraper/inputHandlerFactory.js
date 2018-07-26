@@ -6,10 +6,6 @@ module.exports =  function inputHandlerFactory(){
     }
 
     return {
-        addToListsFromDb: function(input) {
-            input.map( obj => hrefState.scanned[obj.page] = 1)
-        },
-
         currentCountForUrl: function(inputUrl)  {
             if(hrefState.unscanned[inputUrl]) {
                 return hrefState.unscanned[inputUrl]
@@ -27,11 +23,11 @@ module.exports =  function inputHandlerFactory(){
 
                 hrefState.unscanned[url] ? hrefState.unscanned[url]++ : hrefState.unscanned[url] = 1
                 return hrefState
-                          
+                
             },hrefState)
         },
 
-        moveToBlacklist : function(inputUrl) {
+        moveToBlacklist: function(inputUrl) {
 
             if(!hrefState.unscanned[inputUrl]) {
                 hrefState.unscanned[inputUrl] = 1
@@ -45,21 +41,20 @@ module.exports =  function inputHandlerFactory(){
             if(hrefState.scanned[inputUrl]) {
                 return true
             }
-            return false;
+            return false
         },
 
         whiteListIncludes: function(inputUrl) {
             if(hrefState.unscanned[inputUrl]) {
                 return true
             }
-            return false;
+            return false
         },
 
         // DEBUG TOOLS
         listLength: function() {
             return Object.keys(hrefState.scanned).length + Object.keys(hrefState.unscanned).length
         }
-
     }
 
 }

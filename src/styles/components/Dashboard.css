@@ -4,80 +4,6 @@
   width: 100vw;
   height: 100vh; }
 
-.sidenav {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  background-color: #2a313a;
-  overflow-x: hidden;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 60px;
-  transition: 0.5s;
-  color: #9CFF60; }
-
-.showsidenav {
-  width: 350px;
-  margin-left: 250px;
-  border-left: 2px solid #9CFF60; }
-
-.nav-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; }
-
-.nav-button {
-  text-align: center;
-  color: #9CFF60;
-  font-family: 'Roboto Mono';
-  font-size: 14px;
-  background-color: rgba(0, 0, 0, 0);
-  border: 2px solid #9CFF60;
-  border-radius: 5px;
-  /* width: 150px; */
-  padding: 10px 10px 10px 10px;
-  margin: 10px;
-  z-index: 2; }
-
-.nav-button:hover {
-  cursor: pointer;
-  opacity: 0.7;
-  transition-property: opacity, filter;
-  transition-duration: 0.15s;
-  transition-timing-function: linear; }
-
-.nav-input {
-  text-align: center;
-  color: #9CFF60;
-  font-family: 'Roboto Mono';
-  font-size: 10px;
-  background-color: rgba(0, 0, 0, 0);
-  border: 2px solid #9CFF60;
-  border-radius: 5px;
-  width: 200px;
-  padding: 10px 10px 10px 10px;
-  margin: 2px;
-  z-index: 2; }
-
-p {
-  text-align: center;
-  margin: 4px; }
-
-.dashboard-overlay {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  transition: ease .3s;
-  z-index: -1;
-  background-color: rgba(0, 0, 0, 0); }
-
-.show-overlay {
-  z-index: 1;
-  background-color: rgba(0, 0, 0, 0.699); }
-
 .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
   background-color: #6cff60; }
 
@@ -99,7 +25,7 @@ p {
   /* width: 150px; */
   padding: 10px 10px 10px 10px;
   margin: 15px;
-  z-index: 2; }
+  z-index: 0; }
 
 .rerender-button:hover {
   cursor: pointer;
@@ -117,3 +43,7 @@ p {
 
 .hidden {
   display: none; }
+
+#anagraph {
+  position: absolute;
+  top: 0px; }

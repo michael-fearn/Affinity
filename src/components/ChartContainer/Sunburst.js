@@ -5,16 +5,16 @@ import * as utils from './utils';
 class Sunburst extends React.Component {
 
   removePreviousChart(){
-     const chart = document.getElementById(`${this.props.keyId}-svg`);
-     while(chart.hasChildNodes()) {
-       chart.removeChild(chart.lastChild);
-     }
+    const chart = document.getElementById(`${this.props.keyId}-svg`);
+    while(chart.hasChildNodes()) {
+      chart.removeChild(chart.lastChild);
+    }
 
-     const tooltip = document.getElementById(`${this.props.keyId}`);
-     while(tooltip.childElementCount > 1) {
-       tooltip.removeChild(tooltip.children[1]);
-     }
-   }
+    const tooltip = document.getElementById(`${this.props.keyId}`);
+    while(tooltip.childElementCount > 1) {
+      tooltip.removeChild(tooltip.children[1]);
+    }
+  }
 
   componentDidMount() {
     this.renderSunburst(this.props);
@@ -66,7 +66,7 @@ class Sunburst extends React.Component {
       const tooltip = d3.select(`#${self.props.keyId}`)
         .append(tooltipContent ? tooltipContent.type : 'div')
         .style('position', 'absolute')
-        .style('z-index', '10')
+        .style('z-index', '1')
         .style('opacity', '0');
       if (tooltipContent) {
         Object.keys(tooltipContent.props).forEach((key) => {
@@ -94,13 +94,13 @@ class Sunburst extends React.Component {
         return d3.hsl(colorshift, hsl.s, hsl.l);
       })
       .attr('stroke', '#fff')
-      .attr('stroke-width', '1')
+      .attr('stroke-width', '.5')
       .on('click', d => click(d, node, svg, self, x, y, radius, arc))
       .on('mouseover', function (d) {
         if (self.props.tooltip) {
           d3.select(this).style('cursor', 'pointer');
           tooltip.html(() => { const name = utils.formatNameTooltip(d); return name; });
-          return tooltip.transition().duration(50).style('opacity', 1);
+          return tooltip.transition().duration(50).style('opacity', 1).style('display','inline');
         }
         return null;
       })

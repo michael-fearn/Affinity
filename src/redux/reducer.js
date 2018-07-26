@@ -1,9 +1,10 @@
 import data from './../components/ChartContainer/data'
+import { Object } from 'core-js';
 
 let initialState = {
-    newScanUrl: 'http://www.threadless.com',
+    newScanUrl: 'https://www.threadless.com/',
     newScanDepth: 2,
-    baseUrl: '',
+    userDomains: [],
     scraperData: [],
     popularPages: [],
     username: 'bob',
@@ -21,7 +22,6 @@ const CLEAR_SCRAPER_DATA = 'CLEAR_SCRAPER_DATA'
 const UPDATE_POPULAR_PAGE_DATA = 'UPDATE_POPULAR_PAGE_DATA'
 const UPDATE_USER_DOMAINS = 'UPDATE_USER_DOMAINS'
 const UPDATE_USER_NAME = 'UPDATE_USER_NAME'
-const INCREMENT_RERENDER_COUNT = 'INCREMENT_RERENDER_COUNT'
 
 // REDUCER
 export default function reducer (state = initialState, action) {
@@ -31,19 +31,15 @@ export default function reducer (state = initialState, action) {
         case UPDATE_NEWSCAN_DEPTH:
             return Object.assign({}, state, {newScanDepth: action.payload})
         case RESET_NEW_SCAN:
-            console.log("reducer firing") 
-            return Object.assign({}, state, {newScanUrl: 'http://www.threadless.com', newScanDepth: 2})
+            return Object.assign({}, state, {newScanUrl: 'https://www.threadless.com/', newScanDepth: 2})
         case UPDATE_WORKING_DATA:
-            console.log(state.scraperData)        
-            return Object.assign({}, state, { scraperData: [...action.payload, ...state.scraperData ]})
-        case UPDATE_BASE_URL:
-            return Object.assign({}, state, {baseUrl: action.payload})    
-        case INCREMENT_RERENDER_COUNT:
-            return Object.assign({}, state, {renderCount: state.renderCount + 1})
-            case CLEAR_SCRAPER_DATA:
+            return Object.assign({}, state, { scraperData: [...action.payload, ...state.scraperData ]})   
+        case CLEAR_SCRAPER_DATA:
             return Object.assign({}, state, {scraperData: [], renderCount: 0})    
         case UPDATE_POPULAR_PAGE_DATA:
             return Object.assign({}, state, {popularPages: action.payload})
+        case UPDATE_USER_DOMAINS:
+            return Object.assign({}, state, {userDomains: action.payload})
         case UPDATE_USER_NAME:
             return Object.assign({}, state, {username: action.payload})
         default:
@@ -69,12 +65,21 @@ export const  newScanActions = {
     }
 }
 
-export const dashboardActions = {
+export const appActions = {
     resetSubmitNewScanHandler: () => {
         return {
             type: RESET_NEW_SCAN
         }
     },
+    updateScraperData: (payload) => {
+        return {
+            type: UPDATE_WORKING_DATA,
+            payload
+        }
+    }
+}
+
+export const dashboardActions = {
     updateScraperData: (payload) => {
         return {
             type: UPDATE_WORKING_DATA,
@@ -92,9 +97,15 @@ export const dashboardActions = {
             type: CLEAR_SCRAPER_DATA
         }
     },
-    getPopularPages: (payload) => {
+    updatePopularPages: (payload) => {
         return {
             type: UPDATE_POPULAR_PAGE_DATA,
+            payload
+        }
+    },
+    updateUserDomains: (payload) => {
+        return {
+            type :UPDATE_USER_DOMAINS,
             payload
         }
     },
@@ -104,7 +115,6 @@ export const dashboardActions = {
             payload
         }
     }
-
 }
 
 export const scraperDataActions = {
@@ -124,10 +134,12 @@ export const navBarActions = {
         }
     }
 }
+
 export const chartContainerActions = {
-    incrementRenderCount: () => {
-        return  {
-            type: INCREMENT_RERENDER_COUNT
+    newScanUrlHandler: (payload,) => {
+        return {
+            type: UPDATE_NEWSCAN_URL,
+            payload
         }
     }
 }

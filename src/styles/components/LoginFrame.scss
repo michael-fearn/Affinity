@@ -25,6 +25,11 @@
     
 
 }
+.login-button-container {
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+}
 
 .login-button {
     text-align: center;

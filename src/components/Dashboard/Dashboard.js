@@ -12,76 +12,75 @@ class Dashboard extends Component{
 
         this.state = {
             showNavBar: false,
-            getPopularPages: true,
-            renderCount: 0
+            chartRenderCount: 0
         }
-
-    
+        this.navCounter = 0
     }
-    submitNewScanHandler = () => {
+
+    submitNewScanHandler = (puppeteerOnly = false) => {
         this.props.clearScraperData()
         let { newScanUrl, newScanDepth } = this.props
-
-        this.props.updateScraperData({parent: null, name: newScanUrl})
+        this.props.socket.emit('cancel scan')
         this.props.socket.emit('new scan', {
             newScanUrl,
-            newScanDepth
+            newScanDepth,
+            puppeteerOnly
         })
-        //this.props.resetSubmitNewScanHandler()
+        const payload = {
+            newScanUrl,
+            newScanDepth
+        }
+        axios.post('/api/post/domain', payload)
+        this.OpenNavMenuHandler()
+    }
     
+    submitScanFromDisplayHandler = (url, depth = 2) => {
+        this.props.clearScraperData();
+        this.props.socket.emit('get scan data', {
+            url,
+            depth
+        })
+    }
+
+    getUserDomains = async () => {
+        if(this.navCounter && this.props.isUserLoggedIn) {
+            const response = await axios.get('/api/get/domains')
+            this.props.updateUserDomains(response.data)
+        }
     }
 
     getPopularPagesHandler = async () => {
-      //  app.get('/api/get/pages/:domainId', dbController.getPages) if no id return 10 most popular pages
-        const response = await axios.get('/api/get/pages')
-        this.props.getPopularPages(response.data)
-        this.setState({getPopularPages: false})
+        if(this.navCounter) {
+            const response = await axios.get('/api/get/pages')
+            this.props.updatePopularPages(response.data)
+        }
     }
 
     componentDidMount = async () => {
+        this.props.isUserLoggedInHandler()
         let response = await axios.get('/api/username')
-        console.log(response.data)
         this.props.editUserName(response.data)
-        this.props.socket.on( 'node zero', (baseUrl) => {
-            console.log("scraper has fired and client knows about it")
-            this.props.resetSubmitNewScanHandler()
-            this.props.setBaseUrl(baseUrl)
-            console.log(baseUrl)
-        })
-        this.props.socket.on('scrape data', (scraperData) => {
-            this.props.updateScraperData(scraperData)
-            // if(!scraperData[0]){
-            //     const holder = Object.assign({},scraperData)
-            //     scraperData=[]
-            //     scraperData.push(holder)
-            // }
-            console.log(scraperData)
-            console.log("scrapeData fired")
-        })
-        this.props.socket.on('landing page data', (landingPageData) => {
-            this.props.updateScraperData(landingPageData)
-        })
     }
 
     OpenNavMenuHandler = () => {
-        // if(this.state.getPopularPages) {
-        //     this.getPopularPagesHandler()
-        // }
+        this.navCounter++
+        if(this.navCounter > 1) this.navCounter = 0
+        this.getUserDomains()
+        this.getPopularPagesHandler()
         this.setState({showNavBar: !this.state.showNavBar})
-        console.log(1111111111)
-
     }
-    incrementRenderCount = () => {
-        this.setState({renderCount: this.state.renderCount + 1})
+
+    incrementChartRenderCount = () => {
+        this.setState({chartRenderCount: this.state.chartRenderCount + 1})
     }
 
 
     render() {
-
-        // console.log(JSON.stringify(this.props.chartData))
+        if(this.state.showNavBar) {
+            this.getPopularPagesHandler()
+        }
         return(
             <div className="dashboard-container">
-               
                 <div 
                     onClick={this.OpenNavMenuHandler}
                     className={`toggle-menu hamburger hamburger--slider${this.state.showNavBar ? ' is-active' : ''}`}>
@@ -90,12 +89,13 @@ class Dashboard extends Component{
                         </div>
                     </div>
                 </div>
-            {/* <div  className="open-nav-menu">OpenNavMenu</div> */}
                 <div onClick={this.OpenNavMenuHandler} className={`dashboard-overlay${this.state.showNavBar ? ' show-overlay' : ''}`}></div>
                 <div className={`sidenav${this.state.showNavBar ? ' showsidenav' : ''}`}>
             
                 { this.state.showNavBar ? (
                     <NavBar
+                        isUserLoggedIn={this.props.isUserLoggedIn}
+                        submitScanFromDisplayHandler={this.submitScanFromDisplayHandler}
                         getPopularPagesHandler={ this.getPopularPagesHandler }
                         submitNewScanHandler={this.submitNewScanHandler} >
                         <div onClick={this.OpenNavMenuHandler}>OpenNavMenu</div>
@@ -103,12 +103,11 @@ class Dashboard extends Component{
                 ) : (
                     null
                 )}
-            </div>
-                <ChartContainer
-                    incrementRenderCount={this.incrementRenderCount}
-                    renderCount={this.state.renderCount} />
-
-
+                </div>
+                    <ChartContainer
+                        socket={this.props.socket}
+                        incrementRenderCount={this.incrementChartRenderCount}
+                        renderCount={this.state.renderCount} />
             </div>
         )
     }

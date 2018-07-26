@@ -14,8 +14,9 @@ module.exports = async (req, res) => {
         client_secret: CLIENT_SECRET,
         code: req.query.code,
         grant_type: 'authorization_code',
-        redirect_uri: `https://${req.headers.host}/auth/callback`
+        redirect_uri: `${req.protocol}://${req.headers.host}/auth/callback`
     };
+
     try {
         console.log(11111)
         var responseWithToken = await axios.post(

@@ -200,7 +200,8 @@
   opacity: 0;
   height: 250px;
   width: 400px;
-  background-color: #2a313a; }
+  background-color: #2a313a;
+  border: 2px solid #ff2d2d; }
 
 .show-prompt {
   z-index: 20;

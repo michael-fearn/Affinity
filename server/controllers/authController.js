@@ -17,6 +17,7 @@ module.exports = async (req, res) => {
         redirect_uri: `http://${req.headers.host}/auth/callback`
     };
     try {
+        console.log(11111)
         var responseWithToken = await axios.post(
             `https://${REACT_APP_DOMAIN}/oauth/token`,
             payload
@@ -30,6 +31,7 @@ module.exports = async (req, res) => {
         responseWithToken.data.access_token
         }`
     );
+    console.log(22222)
     
     const dbConn = req.app.get('db');
     let { sub, name } = userData.data;
@@ -37,11 +39,13 @@ module.exports = async (req, res) => {
     
     if (userExists[0]) {
         req.session.user = userExists[0];
-        res.redirect(`${FRONTEND_DOMAIN}/#/dashboard`);
+        res.redirect(`/#/dashboard`);
+        //res.redirect(`${FRONTEND_DOMAIN}/#/dashboard`);
     } else {
         dbConn.create_user([sub, name]).then(createdUser => {
             req.session.user = createdUser[0];
-            res.redirect(`${FRONTEND_DOMAIN}/#/dashboard`);
+             //res.redirect(`${FRONTEND_DOMAIN}/#/dashboard`);
+        res.redirect(`/#/dashboard`);
         });
     }
 }

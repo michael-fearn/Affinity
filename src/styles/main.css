@@ -155,7 +155,8 @@ body {
 
 #anagraph {
   position: absolute;
-  top: 0px; }
+  top: 0px;
+  left: 0px; }
 
 .login-title {
   color: #9CFF60;

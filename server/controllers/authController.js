@@ -4,7 +4,7 @@ let {
     REACT_APP_CLIENT_ID,
     CLIENT_SECRET,
     REACT_APP_DOMAIN,
-    FRONTEND_DOMAIN
+    PROTOCOL
 } = process.env
 
 module.exports = async (req, res) => {
@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
         client_secret: CLIENT_SECRET,
         code: req.query.code,
         grant_type: 'authorization_code',
-        redirect_uri: `https://${req.headers.host}/auth/callback`
+        redirect_uri: `${PROTOCOL}://${req.headers.host}/auth/callback`
     };
     try {
         console.log(11111)

@@ -16,6 +16,7 @@ module.exports = async (req, res) => {
         grant_type: 'authorization_code',
         redirect_uri: `${PROTOCOL}://${req.headers.host}/auth/callback`
     };
+
     try {
         console.log(11111)
         var responseWithToken = await axios.post(

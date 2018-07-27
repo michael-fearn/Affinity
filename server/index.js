@@ -44,7 +44,7 @@ app.use(session({
 
 // SCHEDULE DB CLEARING
 const schedule = require('node-schedule')
-const clearDb = schedule.scheduleJob(' */1 * * * *', async () => {
+const clearDb = schedule.scheduleJob(' */20 * * * *', async () => {
     console.log('checking db length')
     let list = await dbConn.db_links()
     if(list.length > 8000) {

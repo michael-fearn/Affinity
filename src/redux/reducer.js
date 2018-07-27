@@ -58,9 +58,9 @@ export const  newScanActions = {
         }
     },
     newScanDepthHandler: (payload) => {
-        if(payload > 2) {
-            payload = 2
-        }
+        // if(payload > 2) {
+        //     payload = 2
+        // }
         return {
             type: UPDATE_NEWSCAN_DEPTH,
             payload

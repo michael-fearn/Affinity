@@ -44,9 +44,13 @@ app.use(session({
 
 // SCHEDULE DB CLEARING
 const schedule = require('node-schedule')
-const clearDb = schedule.scheduleJob(' */10 * * * *', () => {
-    // dbConn.db_table_schema()
-    console.log('cleardb')
+const clearDb = schedule.scheduleJob(' */1 * * * *', async () => {
+    console.log('checking db length')
+    let list = await dbConn.db_links()
+    if(list.length > 8000) {
+        dbConn.db_table_schema();
+        console.log('cleardb')
+    }
 })
 
 // SOCKETS

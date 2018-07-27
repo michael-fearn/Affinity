@@ -63,15 +63,18 @@ class NavBar extends Component {
             <div>
                 <div className={`delete-prompt${this.state.showDeletePrompt ? ' show-prompt' : ''}`}>
                     <div className={`delete-prompt-window${this.state.showDeletePrompt ? ' show-prompt' : ''}`} >
-                        <div>
-                            <div onClick={() => this.setState({showDeletePrompt: !this.state.showDeletePrompt})}>Close</div>
-                            <div>
-                                This Can't be undone, Are you sure?
+                       
+                            <div  className="close-warning" onClick={() => this.setState({showDeletePrompt: !this.state.showDeletePrompt})}>Close</div>
+                            <div className="warning-text">
+                                This cannot be undone.
                             </div>
                             <div>
-                                <button>Delete Account</button>
+                                <button className="delete-button" onClick={ () => {
+                                    this.setState({showDeletePrompt: !this.state.showDeletePrompt})
+                                    this.deleteUserHandler()
+                                }}>Delete Account</button>
                             </div>
-                        </div>
+                     
                     </div>
                 </div>
                 <div className="nav-container">

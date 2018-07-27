@@ -75,8 +75,7 @@ module.exports = async function breadthSearch(input, maxDepth, socket, dbConn, p
                 try {
                     await insertLinksIntoDb(chartDictionary, dbConn)
                 } catch (error) {
-                   // console.log("parent/child pair exists")
-                    console.log(error)
+                    console.log("parent/child pair exists")
                 }
 
                 if(!currentNode.length) {

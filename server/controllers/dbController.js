@@ -15,7 +15,7 @@ module.exports = {
         }
     },
     updateUserName: async (req, res) => {
-
+        
         if (req.session.user) {
 
             const {

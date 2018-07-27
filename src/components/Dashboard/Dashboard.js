@@ -94,6 +94,7 @@ class Dashboard extends Component{
             
                 { this.state.showNavBar ? (
                     <NavBar
+                        history={this.props.history}
                         isUserLoggedIn={this.props.isUserLoggedIn}
                         submitScanFromDisplayHandler={this.submitScanFromDisplayHandler}
                         getPopularPagesHandler={ this.getPopularPagesHandler }

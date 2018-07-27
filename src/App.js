@@ -29,11 +29,20 @@ class App extends Component {
   componentDidMount () {
     this.socket.on( 'node zero', (baseUrl) => {
         this.props.resetSubmitNewScanHandler()
+        window.addEventListener('onbeforeunload', this.destroySession)
     })
 
     this.socket.on('scrape data', (scraperData) => {
         this.props.updateScraperData(scraperData)
     })
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.destroySession)
+  }
+  
+  destroySession() {
+    axios.delete('/api/destroy')
   }
 
   render() {
@@ -44,7 +53,8 @@ class App extends Component {
             return <LoginPage socket={this.socket} />
           }} />
           <Route path='/dashboard' render={ () => {
-            return <Dashboard 
+            return <Dashboard
+              history={this.props.history} 
               isUserLoggedIn={this.state.loggedIn} 
               isUserLoggedInHandler={this.isUserLoggedInHandler} 
               socket={this.socket} />

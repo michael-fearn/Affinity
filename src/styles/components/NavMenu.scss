@@ -1,3 +1,5 @@
+
+
 .sidenav {
     height: 100%;
     width: 0;
@@ -120,9 +122,9 @@
     transition-timing-function: linear; 
 }
 
-.user-name {
+// .user-name {
 
-}
+// }
 .user-name:hover {
     cursor: pointer;
     opacity: 0.7;
@@ -214,7 +216,6 @@
     transition-property: opacity, filter;
     transition-duration: 0.15s;
     transition-timing-function: linear; 
-
 }
 
 .delete-prompt {
@@ -229,22 +230,40 @@
 }
 
 .delete-prompt-window{
+    
     position: fixed;
     z-index: -10;
     opacity: 0;
-    // left: 40vw;
-    // top: 40vh;
-    height: 250px;
-    width: 400px;
+    left: 50%;
+    top: 50%;
+    margin-top: -125px;
+    margin-left: -200px;
+    height: 175px;
+    padding: 10px;
+    width: 300px;
     background-color: #2a313a;
-    border: 2px solid rgb(255, 45, 45);;
+    border: 2px solid #9CFF60;
+    border-radius: 5px;
+   
 }
 
+.close-warning {
+    align-self: flex-end;
+    border: 2px solid #9CFF60;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.warning-text {
+    text-align: center;
+}
 
 
 .show-prompt {
     z-index: 20;
-    display: inline;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     opacity: 1;
     transition-property: opacity, filter;
     transition-duration: 0.15s;

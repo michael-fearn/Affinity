@@ -91,6 +91,11 @@ io.on('connection', socket => {
                 breadthScraper(achievedDepth[1], (depth - achievedDepth[0]), socket, dbConn, false, achievedDepth[0])
             }
     })
+
+    socket.on('disconnect', () => {
+     //   session.destroy()
+        console.log('disconnected')
+    })
 })
 
 // CONTROLLERS
@@ -138,9 +143,32 @@ app.post('/api/post/domain', async (req, res) => {
 })
 
 app.delete('/api/user', async (req, res) => {
-    if(req.session.user) {
+    console.log("delete user")
+    if(req.session.user) {  
         let userData = await dbConn.find_user(req.session.user.auth_id)
-        dbConn.delete_user(userData[0].auth_id)
+
+        try {
+            await dbConn.delete_reference([userData[0].user_id])
+        } catch(error) {
+            res.status(500)
+            console.log(error)
+        }
+        try {
+        await dbConn.delete_user([userData[0].auth_id])
+        req.session.destroy()
+        res.status(200)
+        } catch(error) {
+            res.status(500)
+            console.log(error)
+        }
     }
     res.status(401)
+})
+
+app.delete('/api/destory', (req, res) => {
+    if(req.session.user) {
+        console.log('fired')
+        req.session.destroy()
+        res.status(200)
+    }
 })

@@ -24,6 +24,7 @@ function LoginFrame (props) {
             <div className="login-background"></div>
  
             <h1 className="login-title">Affinity</h1>
+            <h3 className="sub-title">Link Tree Visualization Tool</h3>
             <div className="login-button-container">
                 <div onClick={login} className="login-button">Login</div>
                 <div onClick={dashboard} className="login-button">Continue</div>

@@ -113,11 +113,55 @@ body {
 .hamburger-inner, .hamburger-box {
   z-index: 2; }
 
-.toggle-menu {
+.nav-arrow {
   position: fixed;
+  top: 17px;
+  right: 95px;
+  font-size: 40px;
+  color: #6CFF60;
+  animation: arrow-bounce 1s infinite; }
+
+.hide-arrow {
+  display: none; }
+
+@keyframes arrow-bounce {
+  0% {
+    right: 95px; }
+  50% {
+    right: 120px; }
+  100% {
+    right: 95px; } }
+
+.toggle-menu {
+  position: absolute;
   z-index: 3;
   top: 10px;
   right: 15px; }
+
+.legend {
+  opacity: 0;
+  position: absolute;
+  z-index: 4;
+  height: 100px;
+  left: 15px;
+  bottom: 15px; }
+
+.legend-guide {
+  opacity: 0;
+  position: absolute;
+  text-align: right;
+  bottom: 15px;
+  right: 15px;
+  color: #9CFF60;
+  font-size: 15px;
+  width: 50vw; }
+
+.legend-guide > p {
+  margin: 7px; }
+
+.show-legend {
+  opacity: 1;
+  transition: .5s; }
 
 .rerender-button {
   position: absolute;
@@ -168,6 +212,15 @@ body {
   align-self: center;
   margin: 30px 30px;
   z-index: 4; }
+
+.sub-title {
+  z-index: 4;
+  font-size: 20px;
+  margin-top: -20px;
+  margin-bottom: 10px;
+  align-self: center;
+  -webkit-text-stroke: 1px #9CFF60;
+  -webkit-text-fill-color: #88cb5f00; }
 
 .login-container {
   position: absolute;

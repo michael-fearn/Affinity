@@ -4,6 +4,7 @@ import axios from 'axios';
 import DisplayButton from './DisplayButton/DisplayButton'
 import { navBarActions } from './../../../redux/reducer'
 import { connect } from 'react-redux';
+import Legend from './Legend.svg';
 
 class NavBar extends Component {
     constructor(props) {

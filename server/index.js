@@ -48,8 +48,9 @@ const clearDb = schedule.scheduleJob(' */20 * * * *', async () => {
     console.log('checking db length')
     let list = await dbConn.db_links()
     if(list.length > 8000) {
-        dbConn.db_table_schema();
+        await dbConn.db_table_schema();
         console.log('cleardb')
+        
     }
 })
 
@@ -77,22 +78,22 @@ io.on('connection', socket => {
         }
 
         if (isGoodUrl) {
-                let achievedDepth = await breadthDbQuery(socket, dbConn, newScanUrl, +newScanDepth)
-                console.log(newScanDepth ,achievedDepth[0])
-                if(+newScanDepth - achievedDepth[0]) {
-                    console.log(achievedDepth[1], (+newScanDepth - achievedDepth[0]), false, achievedDepth[0])
-                    breadthScraper(achievedDepth[1], (+newScanDepth - achievedDepth[0]), socket, dbConn, puppeteerOnly, achievedDepth[0])
+                let dbQueryResults = await breadthDbQuery(socket, dbConn, newScanUrl, +newScanDepth)
+                console.log(newScanDepth ,dbQueryResults[0])
+                if(+newScanDepth - dbQueryResults[0]) {
+                    console.log(dbQueryResults[1], (+newScanDepth - dbQueryResults[0]), false, dbQueryResults[0])
+                    breadthScraper(dbQueryResults[1], (+newScanDepth - dbQueryResults[0]), socket, dbConn, puppeteerOnly, dbQueryResults[0])
                 }
         }
     })
 
     socket.on('get scan data', async (input) => {
         const { url, depth } = input
-            let achievedDepth = await breadthDbQuery(socket, dbConn, url, depth)
+            let dbQueryResults = await breadthDbQuery(socket, dbConn, url, depth)
 
-            if(depth - achievedDepth[0]) {
-                console.log(achievedDepth[1], (depth - achievedDepth[0]), false, achievedDepth[0])
-                breadthScraper(achievedDepth[1], (depth - achievedDepth[0]), socket, dbConn, false, achievedDepth[0])
+            if(depth - dbQueryResults[0]) {
+                console.log(dbQueryResults[1], (depth - dbQueryResults[0]), false, dbQueryResults[0])
+                breadthScraper(dbQueryResults[1], (depth - dbQueryResults[0]), socket, dbConn, false, dbQueryResults[0])
             }
     })
 

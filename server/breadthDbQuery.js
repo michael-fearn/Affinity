@@ -24,6 +24,8 @@ module.exports = async function breadthDbQuery( socket, dbConn, url = '', maxNod
             
             if(!currentNode[0]) {
                 console.log("end of results")
+                socket.emit('end of db search')
+
                 //socket.emit('end of results')
                 return [i, parentNode]
             }

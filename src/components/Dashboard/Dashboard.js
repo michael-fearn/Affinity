@@ -127,7 +127,7 @@ class Dashboard extends Component{
                         src={Legend} alt=""/>
                 </div>
                 <div className={`legend-guide${this.state.showLegend ? ' show-legend' : ''}`}>
-                    <p>1. Original Search URL</p>
+                    <p>1. Original search URL</p>
                     <p>2. Links resulting from Search URL</p>
                     <p>3. Links resulting from previous ring</p>
                 </div>

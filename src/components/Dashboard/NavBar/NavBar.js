@@ -4,7 +4,6 @@ import axios from 'axios';
 import DisplayButton from './DisplayButton/DisplayButton'
 import { navBarActions } from './../../../redux/reducer'
 import { connect } from 'react-redux';
-import Legend from './Legend.svg';
 
 class NavBar extends Component {
     constructor(props) {
@@ -79,23 +78,29 @@ class NavBar extends Component {
                     </div>
                 </div>
                 <div className="nav-container">
-                    {this.props.isUserLoggedIn ? loggedInMenuItems : null}
-                    {this.props.isUserLoggedIn ? (
+                    <div>
+                        {this.props.isUserLoggedIn ? loggedInMenuItems : null}
+                        {this.props.isUserLoggedIn ? (
+                            <DisplayButton
+                                    submitScanFromDisplayHandler={this.props.submitScanFromDisplayHandler}
+                                    buttonTitle="Your Domains"
+                                    listArray={this.props.userDomains}
+                                    />
+                        ) : (
+                            null
+                        )}
                         <DisplayButton
-                                submitScanFromDisplayHandler={this.props.submitScanFromDisplayHandler}
-                                buttonTitle="Your Domains"
-                                listArray={this.props.userDomains}
-                                />
-                    ) : (
-                        null
-                    )}
-                    <DisplayButton
-                        submitScanFromDisplayHandler={this.props.submitScanFromDisplayHandler}
-                        buttonTitle="Popular Pages" 
-                        listArray={this.props.popularPages}
-                        />
-                    <NewScan
-                        submitNewScanHandler={this.props.submitNewScanHandler} />
+                            submitScanFromDisplayHandler={this.props.submitScanFromDisplayHandler}
+                            buttonTitle="Popular Pages" 
+                            listArray={this.props.popularPages}
+                            />
+                        <NewScan
+                            submitNewScanHandler={this.props.submitNewScanHandler} />
+                    </div>
+                    <div>
+                        <i class="fab fa-github"></i>
+                        <a href="https://github.com/michael-fearn/Affinity">github.com/michael-fearn/affinity</a>
+                    </div>
                 </div>
             </div>
         );

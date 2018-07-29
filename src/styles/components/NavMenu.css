@@ -46,7 +46,7 @@
   justify-content: center;
   z-index: 3; }
 
-.nav-container > * {
+.nav-container > div > * {
   margin: 10px; }
 
 .nav-new-scan-section {
@@ -132,6 +132,18 @@
   z-index: -1;
   position: relative;
   background-color: rgba(0, 0, 0, 0); }
+
+a:link, a:visited {
+  color: #97ff60;
+  margin-left: -3px;
+  font-size: 13px; }
+
+a:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear; }
 
 .show-overlay {
   z-index: 2;

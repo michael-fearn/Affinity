@@ -47,7 +47,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="site-wrapper">
         <Switch>
           <Route exact path='/' render={ () => {
             return <LoginPage socket={this.socket} />

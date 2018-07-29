@@ -2,7 +2,22 @@
 body {
     margin: 0px;
     padding: 0px;
+    // max-height: 100vh;
+    // max-width: 100vw;
+    // overflow-x: hidden;
+    // overflow-y: hidden;
+    font-family: 'Roboto Mono';
+}
+.site-wrapper {
+    height: 100vh;
+    width: 100vw;
     overflow-x: hidden;
     overflow-y: hidden;
-    font-family: 'Roboto Mono';
+    position: fixed;
+    left: 0px;
+    top:0px;
+}
+
+button:focus {
+    outline-color: ligten(#9CFF60, 30%);
 }

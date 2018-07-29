@@ -43,6 +43,7 @@ class Dashboard extends Component{
             url,
             depth
         })
+        this.OpenNavMenuHandler()        
     }
 
     getUserDomains = async () => {
